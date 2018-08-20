@@ -61,4 +61,4 @@ typings/
 .next
 
 # test files
-.spec.ts
+*.spec.ts
