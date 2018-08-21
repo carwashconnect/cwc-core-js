@@ -1,10 +1,10 @@
-# twf-core
+# cwc-core-js
 
 The quality of life functions I want in the majority of my projects
 
 ## Installation
 ```bash
-npm install twf-core
+npm install cwc-core-js
 ```
 
 ## Usage
