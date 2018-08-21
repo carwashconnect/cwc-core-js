@@ -13,14 +13,16 @@ describe("Errors", function () {
             statusCode: statusCode,
             retryable: false
         };
+
+        let myError = Errors.awsErrorToIError(awsError);
         let iError: IError = {
             message: message,
             code: code,
             status: statusCode,
-            dateCreated: Dates.toISO(Date.now())
+            dateCreated: myError.dateCreated
         };
         
-        expect(Errors.awsErrorToIError(awsError)).toEqual(iError);
+        expect(myError).toEqual(iError);
     });
 
     it("toTimeStamp() should convert a date to a time stamp", function () {
