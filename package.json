@@ -24,7 +24,5 @@
     "jasmine-ts": "^0.2.1",
     "typescript": "^3.0.1"
   },
-  "dependencies": {
-    "aws-sdk": "^2.288.0"
-  }
+  "dependencies": {}
 }
