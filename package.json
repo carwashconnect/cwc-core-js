@@ -1,14 +1,11 @@
 {
-  "name": "cwc-core-js",
-  "version": "0.0.0",
-  "description": "",
-  "author": {
-    "name": "TheWarmFuzzy",
-    "url": "https://github.com/TheWarmFuzzy"
-  },
+  "name": "@carwashconnect/cwc-core-js",
+  "version": "1.0.0",
+  "description": "The quality of life functions I want in the majority of my projects",
+  "author": "TheWarmFuzzy (https://github.com/TheWarmFuzzy)",
   "main": "./dist/index.js",
   "scripts": {
-    "test": "./node_modules/.bin/jasmine-ts src/**/*.spec.ts",
+    "test": "jasmine-ts src/**/*.spec.ts",
     "build": "tsc"
   },
   "license": "ISC",
