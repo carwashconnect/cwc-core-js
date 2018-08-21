@@ -1,0 +1,33 @@
+{
+  "name": "cwc-core-js",
+  "version": "0.0.0",
+  "description": "",
+  "author": {
+    "name": "TheWarmFuzzy",
+    "url": "https://github.com/TheWarmFuzzy"
+  },
+  "main": "./dist/index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/jasmine-ts src/**/*.spec.ts",
+    "build": "tsc"
+  },
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/carwashconnect/cwc-core-js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/carwashconnect/cwc-core-js/issues"
+  },
+  "homepage": "https://github.com/carwashconnect/cwc-core-js#readme",
+  "devDependencies": {
+    "@types/jasmine": "^2.8.8",
+    "jasmine": "^3.1.0",
+    "jasmine-core": "^3.1.0",
+    "jasmine-ts": "^0.2.1",
+    "typescript": "^3.0.1"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.288.0"
+  }
+}

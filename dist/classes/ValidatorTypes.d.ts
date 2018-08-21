@@ -1,0 +1,12 @@
+import { ValidationType } from "../interfaces/ValidationType";
+export declare let isArray: ValidationType;
+export declare let isBoolean: ValidationType;
+export declare let isEmail: ValidationType;
+export declare let isISODate: ValidationType;
+export declare let isJWTToken: ValidationType;
+export declare let isNull: ValidationType;
+export declare let isNumber: ValidationType;
+export declare let isObject: ValidationType;
+export declare let isPhoneNumber: ValidationType;
+export declare let isString: ValidationType;
+export declare let isUndefined: ValidationType;
