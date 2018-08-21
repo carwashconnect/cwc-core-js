@@ -18,7 +18,7 @@ Reduces the work to convert between date formats.
 Converts a timestamp into an ISO date string.
 
 ```js
-import { Dates } from 'twf-core'
+import { Dates } from '@carwashconnect/cwc-core-js'
 
 let timeStamp:number = 1534264485715;
 let isoDate:string = Dates.toISO(timeStamp) // "2018-08-14T16:34:45.715Z"
@@ -29,7 +29,7 @@ let isoDate:string = Dates.toISO(timeStamp) // "2018-08-14T16:34:45.715Z"
 Converts an ISO date string into timeStamp.
 
 ```js
-import { Dates } from 'twf-core'
+import { Dates } from '@carwashconnect/cwc-core-js'
 
 let isoDate:string = "2018-08-14T16:34:45.715Z";
 let timeStamp:number = Dates.toTimeStamp(isoDate) // 1534264485715
@@ -42,7 +42,7 @@ let timeStamp:number = Dates.toTimeStamp(isoDate) // 1534264485715
 Converts AWS errors to my own format.
 
 ```js
-import { Errors, IError } from 'twf-core'
+import { Errors, IError } from '@carwashconnect/cwc-core-js'
 
 let awsError = { 
     message: "My error message", 
@@ -64,7 +64,7 @@ Some quality of life functions for handling objects.
 Creates a copy of an object to prevent manipulation of the original.
 
 ```js
-import { Objects } from 'twf-core'
+import { Objects } from '@carwashconnect/cwc-core-js'
 
 let obj: any = {
     "a": "a",
@@ -81,7 +81,7 @@ let newObj:any = Objects.copy(obj);  // { "a": "a", "b": 0, "c": null, "d": fals
 Check to see if an property exists at the specified path.
 
 ```js
-import { Objects } from 'twf-core'
+import { Objects } from '@carwashconnect/cwc-core-js'
 
 let obj: any = {
     "a": "a",
@@ -99,10 +99,10 @@ let test2:boolean = Objects.deepSearch(obj,"d", "e"); // false
 Evaluates if the input is an object or array (null is evaluated to false).
 
 ```js
-import { Objects } from 'twf-core'
+import { Objects } from '@carwashconnect/cwc-core-js'
 
 let test1:boolean = Objects.isObject({}); // true
-let test2:boolean = Objects.isObject(arr); // true
+let test2:boolean = Objects.isObject([]); // true
 let test3:boolean = Objects.isObject(null); // false
 let test4:boolean = Objects.isObject("Hello world!"); // false
 let test5:boolean = Objects.isObject(1); // false
@@ -114,7 +114,7 @@ let test6:boolean = Objects.isObject(); // false
 Copies the first object and overwrites properties with the properties from the second object.
 
 ```js
-import { Objects } from 'twf-core'
+import { Objects } from '@carwashconnect/cwc-core-js'
 
 let obj1:any = { "a":["hello"], "b":", " };
 let obj2:any = { "a":["world"], "c":["!"]};
@@ -128,7 +128,7 @@ let newObj2:any = Objects.merge(obj1, obj2, true) // { "a":["hello", "world"], "
 Removes empty string elements from the object.
 
 ```js
-import { Objects } from 'twf-core'
+import { Objects } from '@carwashconnect/cwc-core-js'
 
 let obj:any = { "a":["hello"], "b":"" };
 
@@ -144,7 +144,7 @@ Some quality of life functions for handling promises.
 Executes all promises in an array at the same time and does not stop due to errors.
 
 ```js
-import { Promises } from 'twf-core'
+import { Promises } from '@carwashconnect/cwc-core-js'
 
 let promise1 = Promise.resolve(3);
 let promise2 = 42;
@@ -167,7 +167,7 @@ Promises.all([promise1, promise2, promise3, promise4])
 Executes all promises in an array in order.
 
 ```js
-import { Promises } from 'twf-core'
+import { Promises } from '@carwashconnect/cwc-core-js'
 
 let promise1 = Promise.resolve(3);
 let promise2 = 42;
@@ -201,7 +201,7 @@ Used to validate unknown objects.
 
 #### ValidationLimits
 ```js
-import { Validator, ValidationLimits } from 'twf-core'
+import { Validator, ValidationLimits } from '@carwashconnect/cwc-core-js'
 
 let limit:ValidationLimits = {
 
@@ -226,7 +226,7 @@ let limit:ValidationLimits = {
 Validates an object with an unknown structure. If expected properties match returns and object without unexpected properties. Will go as deep as the structure defines.
 
 ```js
-import { Validator, ValidationLimits, ValidationStructure } from 'twf-core'
+import { Validator, ValidationLimits, ValidationStructure } from '@carwashconnect/cwc-core-js'
 
 let validator = new Validator();
 
