@@ -4,7 +4,7 @@ The quality of life functions I want in the majority of my projects
 
 ## Installation
 ```bash
-npm install cwc-core-js
+npm i @carwashconnect/cwc-core-js
 ```
 
 ## Usage
