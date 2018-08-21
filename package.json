@@ -1,6 +1,6 @@
 {
   "name": "@carwashconnect/cwc-core-js",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Core functions for the CWC system.",
   "author": "TheWarmFuzzy (https://github.com/TheWarmFuzzy)",
   "main": "./dist/index.js",
