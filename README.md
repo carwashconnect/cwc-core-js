@@ -1,6 +1,6 @@
 # cwc-core-js
 
-The quality of life functions I want in the majority of my projects
+Core functions for the CWC system.
 
 ## Installation
 ```bash
