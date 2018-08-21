@@ -6,4 +6,5 @@ export declare class Errors {
         statusCode: number;
         retryable: boolean;
     }): IError;
+    static stamp(error: IError): IError;
 }
