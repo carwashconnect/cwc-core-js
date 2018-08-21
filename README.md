@@ -55,6 +55,22 @@ let myError:IError = Errors.awsErrorToIError(awsError); // { message: "My error 
 
 ```
 
+#### stamp( error:IError ): IError
+
+Fills in the dateCreated field of an IError.
+
+```js
+import { Errors, IError } from '@carwashconnect/cwc-core-js'
+
+let iError = { 
+    message: "My error message", 
+    code: "MyErrorCode", 
+    status: 500
+}
+
+let myError:IError = Errors.stamp(iError); // { message: "My error message", code: "MyErrorCode", status: 500, dateCreated: "2018-08-14T16:34:45.715Z" }
+```
+
 ### Objects
 
 Some quality of life functions for handling objects.

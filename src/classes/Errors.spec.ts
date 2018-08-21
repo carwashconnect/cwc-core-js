@@ -1,4 +1,3 @@
-import { Dates } from "./Dates";
 import { Errors } from "./Errors";
 import { IError } from "../interfaces/IError"
 describe("Errors", function () {
@@ -21,20 +20,21 @@ describe("Errors", function () {
             status: statusCode,
             dateCreated: myError.dateCreated
         };
-        
+
         expect(myError).toEqual(iError);
     });
 
-    it("toTimeStamp() should convert a date to a time stamp", function () {
-        let time = 1534264485715;
-        let date = new Date(time);
-        expect(Dates.toTimeStamp(date)).toEqual(time);
-    });
+    it("stamp() should add a timestamp to an error", function () {
+        let iError: IError = {
+            message: "My message",
+            code: "MyMessage",
+            status: 500
+        };
 
-    it("toTimeStamp() should convert a string to a time stamp", function () {
-        let time = 1534264485715;
-        let strTime = "2018-08-14T16:34:45.715Z";
-        expect(Dates.toTimeStamp(strTime)).toEqual(time);
+        let newIError: IError = Errors.stamp(iError);
+        iError.dateCreated = newIError.dateCreated;
+        
+        expect(newIError).toEqual(iError);
     });
 
 });
