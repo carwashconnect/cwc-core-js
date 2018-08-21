@@ -1,6 +1,6 @@
 {
   "name": "@carwashconnect/cwc-core-js",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "The quality of life functions I want in the majority of my projects",
   "author": "TheWarmFuzzy (https://github.com/TheWarmFuzzy)",
   "main": "./dist/index.js",
