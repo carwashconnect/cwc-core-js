@@ -266,6 +266,24 @@ export class Validator {
                     }
 
                     break;
+
+                case "prefix":
+
+                    //Check if it starts with the prefix
+                    if (!(<string>input).startsWith(<string>limit.prefix)) {
+
+                        //Log the error
+                        this._logError(this._validationErrors["ValidationLimitException"], {
+                            "OBJ_PATH": path.join("."),
+                            "LIMITATION": key
+                        })
+
+                        //Set to invalid
+                        isValid = false;
+
+                    }
+
+                    break;
                 default:
                     break;
             }
