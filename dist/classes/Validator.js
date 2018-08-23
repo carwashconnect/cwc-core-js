@@ -153,6 +153,15 @@ var Validator = (function () {
                         isValid = false;
                     }
                     break;
+                case "prefix":
+                    if (!input.startsWith(limit.prefix)) {
+                        this._logError(this._validationErrors["ValidationLimitException"], {
+                            "OBJ_PATH": path.join("."),
+                            "LIMITATION": key
+                        });
+                        isValid = false;
+                    }
+                    break;
                 default:
                     break;
             }
