@@ -64,7 +64,7 @@ export class Validator {
         this._typeValidators[name.toLowerCase()] = { validator: validator, limits: [] };
     }
 
-    public addLimit(name: string, limitFunction: (input: any) => boolean, types: string[]): void {
+    public addLimit(name: string, limitFunction: ValidationFunction, types: string[]): void {
         let limitName: string = name.toLowerCase();
         let typeList: string[] = [];
         for (let i in types) {
