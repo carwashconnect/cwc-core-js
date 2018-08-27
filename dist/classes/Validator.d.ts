@@ -7,7 +7,7 @@ export declare class Validator {
     private _errors;
     constructor();
     addTypeValidator(name: string, validator: ValidationFunction): void;
-    addLimit(name: string, limitFunction: (input: any) => boolean, types: string[]): void;
+    addLimit(name: string, limitFunction: ValidationFunction, types: string[]): void;
     protected _resetLimits(): void;
     protected _mapLimits(): void;
     validate(input: any, structure: ValidationStructure): Promise<any>;
