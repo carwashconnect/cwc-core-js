@@ -1,8 +1,10 @@
-import { ValidationStructure } from "../interfaces/ValidationStructure"
+import { ValidationStructure, ValidationLimitObject } from "../interfaces/ValidationStructure"
 import { ValidationLimits } from "../interfaces/ValidationLimits";
-import { ValidationType } from "../interfaces/ValidationType";
+import { ValidationFunction } from "../interfaces/ValidationFunction";
 import { IError } from "../interfaces/IError"
 import { isArray, isBoolean, isEmail, isJWTToken, isNumber, isPhoneNumber, isString, isUndefined, isISODate, isObject, isNull } from "./ValidatorTypes";
+import { limitMax, limitMaxLength, limitMin, limitMinLength } from "./ValidatorLimits"
+
 import { Objects } from "./Objects";
 import { Dates } from "./Dates";
 
@@ -11,43 +13,124 @@ export class Validator {
 
     private _typeValidators: {
         [key: string]: {
-            validator: ValidationType,
+            validator: ValidationFunction,
             limits: string[]
         }
     } = {};
+
+    private _limits: {
+        [key: string]: {
+            limiter: ValidationFunction,
+            limitName: string,
+            types: string[]
+        }
+    } = {};
+
     private _validationErrors: { [key: string]: IError } = {
         "ValidationStructureException": { status: 500, code: "ValidationStructureException", message: "Validation structure is improperly formatted: ERROR" },
-        "ValidationException": { status: 400, code: "ValidationException", message: "OBJ_PATH expected type TYPE" },
-        "ValidationLimitException": { status: 400, code: "ValidationException", message: "OBJ_PATH did not meet LIMITATION restriction" }
+        "ValidationLimitRequestException": { status: 500, code: "ValidationLimitRequestException", message: "Limit 'LIMITATION' cannot be identified" },
+        "ValidationLimitEvaluationException": { status: 500, code: "ValidationLimitEvaluationException", message: "Provided limit 'LIMITATION' cannot limit provided value type 'TYPE'" },
+        "ValidationException": { status: 400, code: "ValidationException", message: "OBJ_PATH expected type 'TYPE'" },
+        "ValidationLimitException": { status: 400, code: "ValidationLimitException", message: "OBJ_PATH did not meet 'LIMITATION' restriction" }
     }
 
     private _errors: IError[] = [];
 
     constructor() {
         //Add the default validators
-        this.addTypeValidator("array", isArray, ["minLength", "maxLength"]);
+        this.addTypeValidator("array", isArray);
         this.addTypeValidator("boolean", isBoolean);
         this.addTypeValidator("email", isEmail);
         this.addTypeValidator("token", isJWTToken);
         this.addTypeValidator("null", isNull);
-        this.addTypeValidator("number", isNumber, ["min", "max"]);
+        this.addTypeValidator("number", isNumber);
         this.addTypeValidator("phone", isPhoneNumber);
         this.addTypeValidator("phonenumber", isPhoneNumber);
         this.addTypeValidator("phone_number", isPhoneNumber);
-        this.addTypeValidator("object", isObject, ["minLength", "maxLength"]);
-        this.addTypeValidator("string", isString, ["minLength", "maxLength"]);
+        this.addTypeValidator("object", isObject);
+        this.addTypeValidator("string", isString);
         this.addTypeValidator("undefined", isUndefined);
         this.addTypeValidator("isodate", isISODate);
         this.addTypeValidator("iso_date", isISODate);
+
+        //Add the default limits
+        this.addLimit("minLength", limitMinLength, ["array", "object", "string"])
+        this.addLimit("maxLength", limitMaxLength, ["array", "object", "string"])
+        this.addLimit("min", limitMin, ["number"])
+        this.addLimit("max", limitMax, ["number"])
     }
 
-    public addTypeValidator(name: string, validator: ValidationType, limits: string[] = []): void {
-        this._typeValidators[name.toLowerCase()] = { validator: validator, limits: limits };
+    public addTypeValidator(name: string, validator: ValidationFunction): void {
+        this._typeValidators[name.toLowerCase()] = { validator: validator, limits: [] };
     }
 
-    public validate(input: any, structure: ValidationLimits | ValidationLimits[] | ValidationStructure): Promise<any> {
+    public addLimit(name: string, limitFunction: (input: any) => boolean, types: string[]): void {
+        let limitName: string = name.toLowerCase();
+        let typeList: string[] = [];
+        for (let i in types) {
+
+            //Get the type name
+            let typeName: string = types[i].toLowerCase();
+
+            //Check if it applies to all types
+            if ("*" == typeName) {
+
+                //Erase other types from list and add the universal
+                typeList = ["*"]
+                break;
+
+            } else {
+
+                //Add the type to the list
+                typeList.push(typeName);
+
+            }
+
+        }
+
+        //Create the limiter
+        this._limits[limitName] = { limiter: limitFunction, limitName: name, types: typeList };
+
+    }
+
+    //Resets which limits apply to which types
+    protected _resetLimits() {
+        for (let i in this._typeValidators) {
+            this._typeValidators[i].limits = [];
+        }
+    }
+
+    //Maps the limits to the types
+    protected _mapLimits() {
+        this._resetLimits()
+        for (let i in this._limits) {
+            let limit = this._limits[i];
+            for (let type of limit.types) {
+
+                //Check if a universal limiter
+                if ("*" == type) {
+
+                    //Add to all types
+                    for (let j in this._typeValidators)
+                        this._typeValidators[j].limits.push(i)
+
+                } else {
+
+                    //Add to the specified type
+                    this._typeValidators[type].limits.push(i);
+
+                }
+            }
+
+        }
+    }
+
+    public validate(input: any, structure: ValidationStructure): Promise<any> {
         //So we can return errors
         return new Promise((resolve, reject) => {
+
+            //Map the limits to the types
+            this._mapLimits();
 
             //Reset the errors
             this._errors = [];
@@ -64,7 +147,7 @@ export class Validator {
         })
     }
 
-    private _validate(input: any, structure: ValidationLimits | ValidationLimits[] | ValidationStructure, path: string[] = []): any {
+    private _validate(input: any, structure: ValidationStructure, path: string[] = []): any {
 
         let output: any;
 
@@ -119,7 +202,7 @@ export class Validator {
         } else {
 
             //We are validating the contents of a known object
-            structure = <ValidationStructure>structure;
+            structure = <ValidationLimitObject>structure;
 
             //Check if the input is not an object
             if (!Objects.isObject(input)) {
@@ -151,7 +234,7 @@ export class Validator {
         let isValid: boolean = false;
 
         //Create the temporary limitationObject so typescript shuts up
-        let typeLimitation: { validator: ValidationType, limits: string[] } = { validator: () => { return false }, limits: [] };
+        let typeLimitation: { validator: ValidationFunction, limits: string[] } = { validator: () => { return false }, limits: [] };
 
         //Check all the possible types
         for (let i in limit.validationType) {
@@ -190,103 +273,63 @@ export class Validator {
         }
 
 
-        //Loop through the limits (We don't know what limits are there)
-        for (let key in limit) {
+        //Loop through the limits
+        for (let limitName of typeLimitation.limits) {
 
-            //Skip if the limit isn't applicable or is addressed else where
-            if (0 > typeLimitation.limits.indexOf(key)) continue
+            //Copy the limit
+            let limitData = this._limits[limitName];
+            if (!limit) {
 
-            //Check the limit
-            switch (key.toLowerCase()) {
-                case "min":
+                //Log the error
+                this._logError(this._validationErrors["ValidationLimitRequestException"], {
+                    "OBJ_PATH": path.join("."),
+                    "LIMITATION": limitName
+                })
 
-                    //Check if its less than the min value
-                    if (input < (<number>limit.min)) {
+                //Set to invalid
+                isValid = false;
+                continue
+            };
 
-                        //Log the error
-                        this._logError(this._validationErrors["ValidationLimitException"], {
-                            "OBJ_PATH": path.join("."),
-                            "LIMITATION": key
-                        })
+            //Copy the limit function
+            let limitFunction = limitData.limiter;
+            if (!limitFunction) { continue };
 
-                        //Set to invalid
-                        isValid = false;
+            //Copy the value
+            let limitValue: any = limit[limitData.limitName]
+            if ("undefined" == typeof limitValue) { continue };
 
-                    }
+            //Evaluate the limitation
+            let meetsLimitation: boolean = false;
+            try {
+                meetsLimitation = limitFunction(input, limitValue);
+            } catch (e) {
 
-                    break;
-                case "max":
+                //Log the error
+                this._logError(this._validationErrors["ValidationLimitApplicationException"], {
+                    "OBJ_PATH": path.join(".") || "value",
+                    "LIMITATION": limitName,
+                    "TYPE": typeof input
+                })
 
-                    //Check if its greater than the max value
-                    if (input > (<number>limit.max)) {
-
-                        //Log the error
-                        this._logError(this._validationErrors["ValidationLimitException"], {
-                            "OBJ_PATH": path.join("."),
-                            "LIMITATION": key
-                        })
-
-                        //Set to invalid
-                        isValid = false;
-
-                    }
-
-                    break;
-                case "minlength":
-
-                    //Check if its less than the min length
-                    if (Object.keys(input).length < (<number>limit.minLength)) {
-
-                        //Log the error
-                        this._logError(this._validationErrors["ValidationLimitException"], {
-                            "OBJ_PATH": path.join("."),
-                            "LIMITATION": key
-                        })
-
-                        //Set to invalid
-                        isValid = false;
-
-                    }
-
-                    break;
-                case "maxlength":
-
-                    //Check if its greater than the max length
-                    if (Object.keys(input).length > (<number>limit.maxLength)) {
-
-                        //Log the error
-                        this._logError(this._validationErrors["ValidationLimitException"], {
-                            "OBJ_PATH": path.join("."),
-                            "LIMITATION": key
-                        })
-
-                        //Set to invalid
-                        isValid = false;
-
-                    }
-
-                    break;
-
-                case "prefix":
-
-                    //Check if it starts with the prefix
-                    if (!(<string>input).startsWith(<string>limit.prefix)) {
-
-                        //Log the error
-                        this._logError(this._validationErrors["ValidationLimitException"], {
-                            "OBJ_PATH": path.join("."),
-                            "LIMITATION": key
-                        })
-
-                        //Set to invalid
-                        isValid = false;
-
-                    }
-
-                    break;
-                default:
-                    break;
+                //Set to invalid
+                isValid = false;
             }
+
+            //Check if it passed the limit
+            if (!meetsLimitation) {
+
+                //Log the error
+                this._logError(this._validationErrors["ValidationLimitException"], {
+                    "OBJ_PATH": path.join(".") || "value",
+                    "LIMITATION": limitName
+                })
+
+                //Set to invalid
+                isValid = false;
+
+            }
+
         }
 
         // Return validity state 

@@ -1,4 +1,7 @@
 import { ValidationLimits } from "./ValidationLimits"
-export interface ValidationStructure {
-    [key: string]: ValidationLimits | ValidationLimits[] | ValidationStructure ;
+
+export type ValidationStructure = ValidationLimits | ValidationLimits[] | ValidationLimitObject;
+
+export interface ValidationLimitObject {
+    [key: string]: ValidationLimits | ValidationLimits[] | ValidationLimitObject;
 }

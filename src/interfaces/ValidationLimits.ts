@@ -5,5 +5,5 @@ export interface ValidationLimits {
     min?: number;
     maxLength?: number;
     minLength?: number;
-    prefix?: string;
+    [key: string]: any
 }

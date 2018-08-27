@@ -7,6 +7,7 @@ describe("Validator", function () {
 
     let validator = new Validator();
 
+    //Simple known objects
     it("validate() should validate simple known objects", function () {
 
         let obj: any = {
@@ -72,6 +73,8 @@ describe("Validator", function () {
 
     });
 
+
+    //Simple unknown objects
     it("validate() should validate simple unknown objects", function () {
 
         let obj: any[] = [
@@ -123,6 +126,7 @@ describe("Validator", function () {
     });
 
 
+    //Complex known objects
     it("validate() should validate complex known objects", function () {
 
         let obj: any = {
@@ -176,5 +180,61 @@ describe("Validator", function () {
             })
 
     });
-    
+
+
+    //Limits
+    it("validate() should validate simple limits", function () {
+
+        let limit: ValidationStructure = {
+            validationType: ["number"],
+            max: 19,
+            min: 17
+        }
+
+
+        validator.validate(16, limit)
+            .then((newObj: any) => {
+                expect(true).toEqual(false);
+            })
+            .catch(error => {
+                expect(true).toEqual(true);
+            })
+
+        validator.validate(17, limit)
+            .then((newObj: any) => {
+                expect(newObj).toEqual(17);
+            })
+            .catch(error => {
+                console.log(error);
+                expect(true).toEqual(false);
+            })
+
+        validator.validate(18, limit)
+            .then((newObj: any) => {
+                expect(newObj).toEqual(18);
+            })
+            .catch(error => {
+                console.log(error);
+                expect(true).toEqual(false);
+            })
+
+        validator.validate(19, limit)
+            .then((newObj: any) => {
+                expect(newObj).toEqual(19);
+            })
+            .catch(error => {
+                console.log(error);
+                expect(true).toEqual(false);
+            })
+
+        validator.validate(20, limit)
+            .then((newObj: any) => {
+                expect(true).toEqual(false);
+            })
+            .catch(error => {
+                expect(true).toEqual(true);
+            })
+
+    });
+
 });

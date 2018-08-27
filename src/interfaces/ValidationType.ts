@@ -1,1 +1,0 @@
-export type ValidationType = (input: any) => boolean;

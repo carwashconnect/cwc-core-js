@@ -1,6 +1,6 @@
 import { isArray, isBoolean, isEmail, isJWTToken, isNull, isNumber, isPhoneNumber, isObject, isUndefined, isISODate, isString } from "./ValidatorTypes";
 
-describe("Validator", function () {
+describe("Validator types", function () {
 
     //Arrays
     let tArray: object = [];
