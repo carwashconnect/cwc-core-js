@@ -9,13 +9,13 @@ export class Errors {
             message: awsError.message,
             code: awsError.code,
             status: awsError.statusCode,
-            dateCreated: Dates.toISO(Date.now())
+            timeStamp: Dates.toISO(Date.now())
         }
     }
 
     static stamp(error: IError): IError {
         let err: IError = Objects.copy(error);
-        err.dateCreated = Dates.toISO(Date.now());
+        err.timeStamp = Dates.toISO(Date.now());
         return err;
     }
 

@@ -10,12 +10,12 @@ var Errors = (function () {
             message: awsError.message,
             code: awsError.code,
             status: awsError.statusCode,
-            dateCreated: Dates_1.Dates.toISO(Date.now())
+            timeStamp: Dates_1.Dates.toISO(Date.now())
         };
     };
     Errors.stamp = function (error) {
         var err = Objects_1.Objects.copy(error);
-        err.dateCreated = Dates_1.Dates.toISO(Date.now());
+        err.timeStamp = Dates_1.Dates.toISO(Date.now());
         return err;
     };
     return Errors;

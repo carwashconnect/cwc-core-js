@@ -18,7 +18,7 @@ describe("Errors", function () {
             message: message,
             code: code,
             status: statusCode,
-            dateCreated: myError.dateCreated
+            timeStamp: myError.timeStamp
         };
 
         expect(myError).toEqual(iError);
@@ -32,7 +32,7 @@ describe("Errors", function () {
         };
 
         let newIError: IError = Errors.stamp(iError);
-        iError.dateCreated = newIError.dateCreated;
+        iError.timeStamp = newIError.timeStamp;
         
         expect(newIError).toEqual(iError);
     });
