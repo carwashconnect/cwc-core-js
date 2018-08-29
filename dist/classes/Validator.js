@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var ValidatorTypes_1 = require("./ValidatorTypes");
 var ValidatorLimits_1 = require("./ValidatorLimits");
 var Objects_1 = require("./Objects");
-var Dates_1 = require("./Dates");
+var Errors_1 = require("./Errors");
 var Validator = (function () {
     function Validator() {
         this._typeValidators = {};
@@ -202,8 +202,7 @@ var Validator = (function () {
         return isValid ? true : false;
     };
     Validator.prototype._logError = function (error, replacementValues) {
-        var newError = Objects_1.Objects.copy(error);
-        newError.dateCreated = Dates_1.Dates.toISO(Date.now());
+        var newError = Errors_1.Errors.stamp(error);
         for (var key in replacementValues) {
             newError.message = newError.message.replace(key.toUpperCase(), replacementValues[key]);
         }

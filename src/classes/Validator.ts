@@ -7,6 +7,7 @@ import { limitMax, limitMaxLength, limitMin, limitMinLength } from "./ValidatorL
 
 import { Objects } from "./Objects";
 import { Dates } from "./Dates";
+import { Errors } from "./Errors";
 
 
 export class Validator {
@@ -338,8 +339,7 @@ export class Validator {
     }
 
     private _logError(error: IError, replacementValues: { [key: string]: any }): void {
-        let newError: IError = Objects.copy(error);
-        newError.dateCreated = Dates.toISO(Date.now());
+        let newError: IError = Errors.stamp(error);
         for (let key in replacementValues) {
             newError.message = newError.message.replace(key.toUpperCase(), replacementValues[key])
         }
