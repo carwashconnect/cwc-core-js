@@ -8,7 +8,7 @@ describe("Validator", function () {
     let validator = new Validator();
 
     //Simple known objects
-    it("validate() should validate simple known objects", function () {
+    it("validate() should validate simple known objects", function (done) {
 
         let obj: any = {
             a: "hello",
@@ -34,14 +34,16 @@ describe("Validator", function () {
         validator.validate(obj, expectedStructure)
             .then((newObj: any) => {
                 expect(newObj).toEqual(expectedOutput);
+                done()
             })
             .catch(error => {
                 expect(true).toEqual(false);
+                done()
             })
 
     });
 
-    it("validate() should throw proper errors on simple known objects", function () {
+    it("validate() should throw proper errors on simple known objects", function (done) {
 
         let obj: any = {
             a: "hello",
@@ -66,16 +68,18 @@ describe("Validator", function () {
         validator.validate(obj, expectedStructure)
             .then((newObj: any) => {
                 expect(true).toEqual(false);
+                done()
             })
             .catch((errors: IError[]) => {
                 expect(errors[0].message.indexOf("errorProperty")).toBeGreaterThan(-1);
+                done()
             })
 
     });
 
 
     //Simple unknown objects
-    it("validate() should validate simple unknown objects", function () {
+    it("validate() should validate simple unknown objects", function (done) {
 
         let obj: any[] = [
             "hello",
@@ -97,15 +101,17 @@ describe("Validator", function () {
         validator.validate(obj, expectedStructure)
             .then((newObj: any) => {
                 expect(newObj).toEqual(expectedOutput);
+                done()
             })
             .catch(error => {
                 console.log(error);
                 expect(true).toEqual(false);
+                done()
             })
 
     });
 
-    it("validate() should throw proper errors on simple unknown objects", function () {
+    it("validate() should throw proper errors on simple unknown objects", function (done) {
 
         let obj: any[] = ["hello", "world", 0]
 
@@ -118,16 +124,18 @@ describe("Validator", function () {
         validator.validate(obj, expectedStructure)
             .then((newObj: any) => {
                 expect(true).toEqual(false);
+                done()
             })
             .catch((errors: IError[]) => {
                 expect(errors[0].message.indexOf("2")).toBeGreaterThan(-1);
+                done()
             })
 
     });
 
 
     //Complex known objects
-    it("validate() should validate complex known objects", function () {
+    it("validate() should validate complex known objects", function (done) {
 
         let obj: any = {
             a: "hello",
@@ -150,14 +158,16 @@ describe("Validator", function () {
         validator.validate(obj, expectedStructure)
             .then((newObj: any) => {
                 expect(newObj).toEqual(expectedOutput);
+                done()
             })
             .catch(error => {
                 expect(true).toEqual(false);
+                done()
             })
 
     });
 
-    it("validate() should throw proper complex on simple known objects", function () {
+    it("validate() should throw proper complex on simple known objects", function (done) {
 
         let obj: any = {
             a: "hello",
@@ -174,16 +184,18 @@ describe("Validator", function () {
         validator.validate(obj, expectedStructure)
             .then((newObj: any) => {
                 expect(true).toEqual(false);
+                done()
             })
             .catch((errors: IError[]) => {
                 expect(errors[0].message.indexOf("d.e")).toBeGreaterThan(-1);
+                done()
             })
 
     });
 
 
     //Limits
-    it("validate() should validate simple limits", function () {
+    it("validate() should validate simple limits", function (done) {
 
         let limit: ValidationStructure = {
             validationType: ["number"],
@@ -195,44 +207,52 @@ describe("Validator", function () {
         validator.validate(16, limit)
             .then((newObj: any) => {
                 expect(true).toEqual(false);
+                done()
             })
             .catch(error => {
                 expect(true).toEqual(true);
+                done()
             })
 
         validator.validate(17, limit)
             .then((newObj: any) => {
                 expect(newObj).toEqual(17);
+                done()
             })
             .catch(error => {
                 console.log(error);
                 expect(true).toEqual(false);
+                done()
             })
 
         validator.validate(18, limit)
             .then((newObj: any) => {
                 expect(newObj).toEqual(18);
+                done()
             })
             .catch(error => {
-                console.log(error);
                 expect(true).toEqual(false);
+                done()
             })
 
         validator.validate(19, limit)
             .then((newObj: any) => {
                 expect(newObj).toEqual(19);
+                done()
             })
             .catch(error => {
-                console.log(error);
                 expect(true).toEqual(false);
+                done()
             })
 
         validator.validate(20, limit)
             .then((newObj: any) => {
                 expect(true).toEqual(false);
+                done()
             })
             .catch(error => {
                 expect(true).toEqual(true);
+                done()
             })
 
     });
