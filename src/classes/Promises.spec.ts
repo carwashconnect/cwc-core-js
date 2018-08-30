@@ -2,7 +2,7 @@ import { Promises } from "./Promises";
 
 describe("Promises", function () {
 
-    it("all() should execute all promises at the same time and always return an array", function () {
+    it("all() should execute all promises at the same time and always return an array", function (done) {
         Promises.all([], false)
             .then(res => {
                 expect(res).toEqual([]);
@@ -20,11 +20,12 @@ describe("Promises", function () {
         Promises.all(promises, false)
             .then(res => {
                 expect(res).toEqual(promisesResult);
+                done()
             })
-            .catch(err => { expect(true).toEqual(false); })
+            .catch(err => { expect(true).toEqual(false); done() })
     });
 
-    it("sequence() should execute promises in a sequence", function () {
+    it("sequence() should execute promises in a sequence", function (done) {
 
         //Inputs
         let promises1: Promise<any>[] = [Promise.resolve("Hello"), Promise.resolve(true), Promise.resolve(0), Promise.resolve(["a"]), Promise.reject("My error here")]
@@ -37,22 +38,25 @@ describe("Promises", function () {
         Promises.sequence([])
             .then(res => {
                 expect(res).toEqual([]);
+                done()
             })
-            .catch(err => { expect(true).toEqual(false); })
+            .catch(err => { expect(true).toEqual(false); done() })
 
         // Failing on catch 
         Promises.sequence(promises1)
             .then(res => {
                 expect(true).toEqual(false);
+                done()
             })
-            .catch(err => { expect(err).toEqual("My error here"); })
+            .catch(err => { expect(err).toEqual("My error here"); done() })
 
         //Succeeding on catch
         Promises.sequence(promises2, true)
             .then(res => {
                 expect(res).toEqual(promisesResult);
+                done()
             })
-            .catch(err => { expect(true).toEqual(false); })
+            .catch(err => { expect(true).toEqual(false); done() })
 
     });
 
