@@ -9,7 +9,7 @@ var Errors = (function () {
         return {
             message: awsError.message,
             code: awsError.code,
-            status: awsError.statusCode,
+            status: awsError.statusCode || 500,
             timeStamp: Dates_1.Dates.toISO(Date.now())
         };
     };

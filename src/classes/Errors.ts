@@ -8,7 +8,7 @@ export class Errors {
         return <IError>{
             message: awsError.message,
             code: awsError.code,
-            status: awsError.statusCode,
+            status: awsError.statusCode || 500,
             timeStamp: Dates.toISO(Date.now())
         }
     }
