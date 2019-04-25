@@ -154,4 +154,57 @@ describe("Objects", function () {
 
     });
 
+
+    it("compare() should check what has changed between objects", function () {
+        let obj1: any = {
+            "a": "a",
+            "b": 0,
+            "c": null,
+            "d": false,
+            "e": [
+                { "f": "f" },
+                "g"
+            ],
+            "h": {
+                "i": "i",
+                "j": {
+                    "k": "k",
+                    "l": 50
+                }
+            }
+        }
+
+        let obj2: any = {
+            "a": "a",
+            "b": 1,
+            "c": 4,
+            "e": [
+                { "f": "f" },
+                "g"
+            ],
+            "h": {
+                "i": "i",
+                "j": {
+                    "l": 50,
+                    "m": 1
+                }
+            },
+            "m": {
+                "o": true
+            }
+        }
+
+        let output = {
+            additions: { "m": { "o": true }, "h": { "j": { "m": 1 } } },
+            deletions: { "d": true, "h": { "j": { "k": true } } },
+            updates: { "b": 1, "c": 4 },
+        }
+
+        //Create the copy and test
+        let comparison: any = Objects.compare(obj1, obj2);
+
+        expect(comparison).toEqual(output);
+
+    });
+
 });

@@ -130,4 +130,107 @@ export class Objects {
         return returnObj;
     }
 
+    static compare(obj1: any, obj2: any, cbh: number = 0): { updates?: any, deletions?: any, additions?: any } {
+
+        //Check if we've exceeded the call back limit
+        if (cbh > CALLBACK_HELL_LIMIT) return {};
+
+        //Check if the first input is an object
+        if (Objects.isObject(obj1)) {
+
+            //Check if the second input is an object
+            if (Objects.isObject(obj2)) {
+                let changes: { updates?: any, deletions?: any, additions?: any } = {};
+
+                let obj1Keys: string[] = Object.keys(obj1);
+                let obj2Keys: string[] = Object.keys(obj2);
+                let commonKeys: string[] = [];
+
+                //Loop through the keys of the first object
+                for (let key of obj1Keys) {
+
+                    //Check if the second object has the key
+                    if (obj2Keys.includes(key)) {
+                        commonKeys.push(key)
+                    } else {
+
+                        //The property has been removed
+                        changes.deletions = changes.deletions || {};
+                        changes.deletions[key] = true;
+
+                    }
+                }
+
+                //Loop through the keys of the second object
+                for (let key of obj2Keys) {
+
+                    //Check if the key is not shared
+                    if (!commonKeys.includes(key)) {
+
+                        //The property has been added
+                        changes.additions = changes.additions || {};
+                        changes.additions[key] = obj2[key];
+
+                    }
+
+                }
+
+
+                //Loop through the common keys
+                for (let key of commonKeys) {
+                    let tempChanges: { updates?: any, deletions?: any, additions?: any } = Objects.compare(obj1[key], obj2[key], cbh + 1);
+
+                    //Check if contained properties have been added
+                    if (tempChanges.additions) {
+                        changes.additions = changes.additions || {};
+                        changes.additions[key] = tempChanges.additions;
+                    }
+
+                    //Check if contained properties have been deleted
+                    if (tempChanges.deletions) {
+                        changes.deletions = changes.deletions || {};
+                        changes.deletions[key] = tempChanges.deletions;
+                    }
+
+                    //Check if contained properties have been updated
+                    if (tempChanges.updates) {
+                        changes.updates = changes.updates || {};
+                        changes.updates[key] = tempChanges.updates;
+                    }
+
+                }
+
+                //Return all the changes
+                return changes;
+
+            } else {
+
+                //Return the second input as the entire first input has changed
+                return { "updates": obj2 }
+
+            }
+
+        } else {
+
+            //Check if the second input is an object
+            if (Objects.isObject(obj2)) {
+
+                //Return the second input as the entire first input has changed
+                return { "updates": obj2 };
+
+            } else {
+
+                //If they are the same return no change
+                if (obj1 == obj2) return {};
+
+                //If they are not the same type return the second object
+                if (typeof obj1 != typeof obj2) return { "updates": obj2 };
+
+                //TODO investigate extra logic here for arrays
+                return { "updates": obj2 }
+
+            }
+        }
+    }
+
 }

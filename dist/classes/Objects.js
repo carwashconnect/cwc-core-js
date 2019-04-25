@@ -83,6 +83,68 @@ var Objects = (function () {
         }
         return returnObj;
     };
+    Objects.compare = function (obj1, obj2, cbh) {
+        if (cbh === void 0) { cbh = 0; }
+        if (cbh > CALLBACK_HELL_LIMIT)
+            return {};
+        if (Objects.isObject(obj1)) {
+            if (Objects.isObject(obj2)) {
+                var changes = {};
+                var obj1Keys = Object.keys(obj1);
+                var obj2Keys = Object.keys(obj2);
+                var commonKeys = [];
+                for (var _i = 0, obj1Keys_1 = obj1Keys; _i < obj1Keys_1.length; _i++) {
+                    var key = obj1Keys_1[_i];
+                    if (obj2Keys.includes(key)) {
+                        commonKeys.push(key);
+                    }
+                    else {
+                        changes.deletions = changes.deletions || {};
+                        changes.deletions[key] = true;
+                    }
+                }
+                for (var _a = 0, obj2Keys_1 = obj2Keys; _a < obj2Keys_1.length; _a++) {
+                    var key = obj2Keys_1[_a];
+                    if (!commonKeys.includes(key)) {
+                        changes.additions = changes.additions || {};
+                        changes.additions[key] = obj2[key];
+                    }
+                }
+                for (var _b = 0, commonKeys_1 = commonKeys; _b < commonKeys_1.length; _b++) {
+                    var key = commonKeys_1[_b];
+                    var tempChanges = Objects.compare(obj1[key], obj2[key], cbh + 1);
+                    if (tempChanges.additions) {
+                        changes.additions = changes.additions || {};
+                        changes.additions[key] = tempChanges.additions;
+                    }
+                    if (tempChanges.deletions) {
+                        changes.deletions = changes.deletions || {};
+                        changes.deletions[key] = tempChanges.deletions;
+                    }
+                    if (tempChanges.updates) {
+                        changes.updates = changes.updates || {};
+                        changes.updates[key] = tempChanges.updates;
+                    }
+                }
+                return changes;
+            }
+            else {
+                return { "updates": obj2 };
+            }
+        }
+        else {
+            if (Objects.isObject(obj2)) {
+                return { "updates": obj2 };
+            }
+            else {
+                if (obj1 == obj2)
+                    return {};
+                if (typeof obj1 != typeof obj2)
+                    return { "updates": obj2 };
+                return { "updates": obj2 };
+            }
+        }
+    };
     return Objects;
 }());
 exports.Objects = Objects;
