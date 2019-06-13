@@ -145,6 +145,60 @@ var Objects = (function () {
             }
         }
     };
+    Objects.intersect = function (obj1, obj2, options) {
+        if (options === void 0) { options = { cbh: 0, onlyMatchingFields: true }; }
+        options.cbh = options.cbh || 0;
+        options.onlyMatchingFields = "undefined" != typeof options.onlyMatchingFields ? options.onlyMatchingFields : true;
+        if (CALLBACK_HELL_LIMIT < options.cbh || 0)
+            return undefined;
+        if (!Objects.isObject(obj1) || !Objects.isObject(obj2))
+            return undefined;
+        var obj1Copy = 0 == options.cbh ? Objects.copy(obj1) : obj1;
+        var obj2Copy = 0 == options.cbh ? Objects.copy(obj2) : obj2;
+        var intersectedObject = {};
+        for (var key in obj1Copy) {
+            if ("undefined" == typeof obj2Copy[key])
+                continue;
+            if (Objects.isObject(obj1Copy[key]) && Objects.isObject(obj2Copy[key])) {
+                var optionCopy = Objects.copy(options);
+                optionCopy.cbh = (optionCopy.cbh || 0) + 1;
+                intersectedObject[key] = Objects.intersect(obj1Copy[key], obj2Copy[key], optionCopy);
+            }
+            else {
+                if (options.onlyMatchingFields) {
+                    if (obj1Copy[key] === obj2Copy[key])
+                        intersectedObject[key] = obj1Copy[key];
+                }
+                else {
+                    intersectedObject[key] = obj1Copy[key];
+                }
+            }
+        }
+        return intersectedObject;
+    };
+    Objects.subtract = function (obj1, obj2, options) {
+        if (options === void 0) { options = { cbh: 0 }; }
+        options.cbh = options.cbh || 0;
+        if (CALLBACK_HELL_LIMIT < options.cbh || 0)
+            return {};
+        if (!Objects.isObject(obj1) || !Objects.isObject(obj2))
+            return {};
+        var obj1Copy = 0 == options.cbh ? Objects.copy(obj1) : obj1;
+        var obj2Copy = 0 == options.cbh ? Objects.copy(obj2) : obj2;
+        for (var key in obj2Copy) {
+            if ("undefined" == typeof obj1Copy[key])
+                continue;
+            if (Objects.isObject(obj1Copy[key]) && Objects.isObject(obj2Copy[key])) {
+                var optionCopy = Objects.copy(options);
+                optionCopy.cbh = (optionCopy.cbh || 0) + 1;
+                obj1Copy[key] = Objects.subtract(obj1Copy[key], obj2Copy[key], optionCopy);
+            }
+            else {
+                delete obj1Copy[key];
+            }
+        }
+        return obj1Copy;
+    };
     return Objects;
 }());
 exports.Objects = Objects;

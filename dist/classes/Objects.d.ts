@@ -9,4 +9,17 @@ export declare class Objects {
         deletions?: any;
         additions?: any;
     };
+    static intersect(obj1: any, obj2: any, options?: IIntersectOptions): IGenericObject | undefined;
+    static subtract(obj1: any, obj2: any, options?: ISubtractOptions): IGenericObject;
+}
+export interface IGenericObject {
+    [key: string]: any;
+}
+export interface IGeneralObjectOptions {
+    cbh?: number;
+}
+export interface IIntersectOptions extends IGeneralObjectOptions {
+    onlyMatchingFields?: boolean;
+}
+export interface ISubtractOptions extends IGeneralObjectOptions {
 }
