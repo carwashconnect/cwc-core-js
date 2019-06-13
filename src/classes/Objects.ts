@@ -130,6 +130,7 @@ export class Objects {
         return returnObj;
     }
 
+    // Returns the differences between the two objects
     static compare(obj1: any, obj2: any, cbh: number = 0): { updates?: any, deletions?: any, additions?: any } {
 
         //Check if we've exceeded the call back limit
@@ -233,4 +234,119 @@ export class Objects {
         }
     }
 
+    // Returns fields that appear in both objects
+    static intersect(obj1: any, obj2: any, options: IIntersectOptions = { cbh: 0, onlyMatchingFields: true }): IGenericObject | undefined {
+
+        //Set default options
+        options.cbh = options.cbh || 0;
+        options.onlyMatchingFields = "undefined" != typeof options.onlyMatchingFields ? options.onlyMatchingFields : true;
+
+        //Ensure we're not in callback hell
+        if (CALLBACK_HELL_LIMIT < options.cbh || 0) return undefined;
+
+        //Ensure that both objects are objects
+        if (!Objects.isObject(obj1) || !Objects.isObject(obj2)) return undefined;
+
+        //Copy the objects on entry
+        let obj1Copy: any = 0 == options.cbh ? Objects.copy(obj1) : obj1;
+        let obj2Copy: any = 0 == options.cbh ? Objects.copy(obj2) : obj2;
+
+        let intersectedObject: IGenericObject = {};
+
+        //Loop through the first object's keys
+        for (let key in obj1Copy) {
+
+            //Check if the key isn't defined in the second object
+            if ("undefined" == typeof obj2Copy[key]) continue;
+
+            //Check if we have to delve deeper
+            if (Objects.isObject(obj1Copy[key]) && Objects.isObject(obj2Copy[key])) {
+
+                //Add to the callback counter
+                let optionCopy: IIntersectOptions = Objects.copy(options);
+                optionCopy.cbh = (optionCopy.cbh || 0) + 1;
+
+                //Copy over the object's value intersect
+                intersectedObject[key] = Objects.intersect(obj1Copy[key], obj2Copy[key], optionCopy)
+
+            } else {
+
+                //Check if we're only returning matching fields
+                if (options.onlyMatchingFields) {
+
+                    //Copy over the object's value if the values match
+                    if (obj1Copy[key] === obj2Copy[key]) intersectedObject[key] = obj1Copy[key]
+
+                } else {
+
+                    //Copy over the object's value
+                    intersectedObject[key] = obj1Copy[key]
+
+                }
+
+            }
+
+        }
+
+        return intersectedObject;
+
+    }
+
+    // Subtract the fields in the second object from the first object
+    static subtract(obj1: any, obj2: any, options: ISubtractOptions = { cbh: 0 }): IGenericObject {
+
+        //Set default options
+        options.cbh = options.cbh || 0;
+
+        //Ensure we're not in callback hell
+        if (CALLBACK_HELL_LIMIT < options.cbh || 0) return {};
+
+        //Ensure that both objects are objects
+        if (!Objects.isObject(obj1) || !Objects.isObject(obj2)) return {};
+
+        //Copy the objects on entry
+        let obj1Copy: any = 0 == options.cbh ? Objects.copy(obj1) : obj1;
+        let obj2Copy: any = 0 == options.cbh ? Objects.copy(obj2) : obj2;
+
+        //Loop through the keys in the second object
+        for (let key in obj2Copy) {
+
+            //Ensure the key exists in the first object
+            if ("undefined" == typeof obj1Copy[key]) continue;
+
+            //Check if both fields are objects
+            if (Objects.isObject(obj1Copy[key]) && Objects.isObject(obj2Copy[key])) {
+
+                //Add to the callback counter
+                let optionCopy: ISubtractOptions = Objects.copy(options);
+                optionCopy.cbh = (optionCopy.cbh || 0) + 1;
+
+                //Copy over the object's value intersect
+                obj1Copy[key] = Objects.subtract(obj1Copy[key], obj2Copy[key], optionCopy)
+
+            } else {
+
+                //Remove the field from the object
+                delete obj1Copy[key]
+
+            }
+
+        }
+
+        return obj1Copy
+    }
+
 }
+
+export interface IGenericObject {
+    [key: string]: any
+}
+
+export interface IGeneralObjectOptions {
+    cbh?: number;
+}
+export interface IIntersectOptions extends IGeneralObjectOptions {
+    onlyMatchingFields?: boolean;
+}
+
+export interface ISubtractOptions extends IGeneralObjectOptions { }

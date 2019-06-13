@@ -41,7 +41,7 @@ describe("Objects", function () {
         expect(Objects.deepSearch("hello")).toEqual(false);
     });
 
-    it("deepSearch() should return non-objects", function () {
+    it("copy() should return non-objects", function () {
         expect(Objects.copy(null)).toEqual(null);
         expect(Objects.copy(undefined)).toEqual(undefined);
         expect(Objects.copy(false)).toEqual(false);
@@ -205,6 +205,26 @@ describe("Objects", function () {
 
         expect(comparison).toEqual(output);
 
+    });
+
+    it("intersect() should check what has changed between objects", function () {
+        let obj1: any = { "a": true, "b": true, "c": true, "d": { "a": true, "b": true }, "e": { "a": true } }
+        let obj2: any = { "a": true, "b": false, "d": { "a": true, "b": false, "c": true }, "e": true }
+
+        let outputMatching = { "a": true, "d": { "a": true } }
+        let outputNotMatching = { "a": true, "b": true, "d": { "a": true, "b": true }, "e": { "a": true } }
+
+        expect(Objects.intersect(obj1, obj2, { onlyMatchingFields: true })).toEqual(outputMatching);
+        expect(Objects.intersect(obj1, obj2, { onlyMatchingFields: false })).toEqual(outputNotMatching);
+    });
+
+    it("subtract() should remove what is common between objects", function () {
+        let obj1: any = { "a": true, "b": true, "c": true, "d": { "a": true, "b": true, "c": true }, "e": { "a": true }, "f": true }
+        let obj2: any = { "a": true, "b": false, "d": { "a": true, "b": false }, "e": true, "f": { "a": true } }
+
+        let output = { "c": true, "d": { "c": true } }
+
+        expect(Objects.subtract(obj1, obj2)).toEqual(output);
     });
 
 });
