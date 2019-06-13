@@ -8,8 +8,7 @@
     "test": "jasmine-ts src/**/*.spec.ts",
     "build": "tsc",
     "preversion": "npm test",
-    "version": "npm run build && git add -A dist",
-    "postversion": "git push && git push --tags"
+    "version": "npm run build"
   },
   "license": "ISC",
   "repository": {
