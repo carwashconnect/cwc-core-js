@@ -6,7 +6,10 @@
   "main": "./dist/index.js",
   "scripts": {
     "test": "jasmine-ts src/**/*.spec.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "preversion": "npm test",
+    "version": "npm run build && git add -A dist",
+    "postversion": "git push && git push --tags"
   },
   "license": "ISC",
   "repository": {
