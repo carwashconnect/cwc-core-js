@@ -11,6 +11,7 @@ export declare class Objects {
     };
     static intersect(obj1: any, obj2: any, options?: IIntersectOptions): IGenericObject | undefined;
     static subtract(obj1: any, obj2: any, options?: ISubtractOptions): IGenericObject;
+    static createPath(obj: IGenericObject, ...keys: string[]): IGenericObject;
 }
 export interface IGenericObject {
     [key: string]: any;

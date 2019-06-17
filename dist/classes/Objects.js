@@ -199,6 +199,21 @@ var Objects = (function () {
         }
         return obj1Copy;
     };
+    Objects.createPath = function (obj) {
+        var keys = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            keys[_i - 1] = arguments[_i];
+        }
+        if (!this.isObject(obj) || Array.isArray(obj))
+            return obj;
+        var currentLevel = obj;
+        for (var _a = 0, keys_2 = keys; _a < keys_2.length; _a++) {
+            var key = keys_2[_a];
+            currentLevel[key] = currentLevel[key] || {};
+            currentLevel = currentLevel[key];
+        }
+        return obj;
+    };
     return Objects;
 }());
 exports.Objects = Objects;
