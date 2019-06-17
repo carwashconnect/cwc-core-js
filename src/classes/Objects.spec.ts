@@ -227,4 +227,22 @@ describe("Objects", function () {
         expect(Objects.subtract(obj1, obj2)).toEqual(output);
     });
 
+    it("createPath() should create a path without deleting current contents", function () {
+        let obj1: any = { "b": {} }
+        let obj2: any = { "a": { "a": 0 }, "b": {} }
+        let obj3: any = { "a": { "b": { "c": { "d": 0 } } } }
+
+        let output1 = { "a": { "b": { "c": {} } }, "b": {} }
+        let output2 = { "a": { "a": 0, "b": { "c": {} } }, "b": {} }
+        let output3 = { "a": { "b": { "c": { "d": 0 } } } }
+
+        Objects.createPath(obj1, "a", "b", "c")
+        Objects.createPath(obj2, "a", "b", "c")
+        Objects.createPath(obj3, "a", "b", "c")
+
+        expect(obj1).toEqual(output1);
+        expect(obj2).toEqual(output2);
+        expect(obj3).toEqual(output3);
+    });
+
 });

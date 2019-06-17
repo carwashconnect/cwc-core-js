@@ -336,6 +336,31 @@ export class Objects {
         return obj1Copy
     }
 
+    //Creates a given path in an object safely
+    static createPath(obj: IGenericObject, ...keys: string[]): IGenericObject {
+
+        // Return if not an object, null, or have exceeded the callback count
+        if (!this.isObject(obj) || Array.isArray(obj)) return obj;
+
+        //Reverse the keys
+        let currentLevel: IGenericObject = obj;
+
+        //Loop through all of the provided keys
+        for (let key of keys) {
+
+            //Create the path if it doesn't exist
+            currentLevel[key] = currentLevel[key] || {};
+
+            //Copy the next level into the current level
+            currentLevel = currentLevel[key];
+
+        }
+
+        //Return the object
+        return obj;
+
+    }
+
 }
 
 export interface IGenericObject {
