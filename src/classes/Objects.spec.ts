@@ -194,6 +194,7 @@ describe("Objects", function () {
             }
         }
 
+
         let output = {
             additions: { "m": { "o": true }, "h": { "j": { "m": 1 } } },
             deletions: { "d": true, "h": { "j": { "k": true } } },
@@ -203,7 +204,13 @@ describe("Objects", function () {
         //Create the copy and test
         let comparison: any = Objects.compare(obj1, obj2);
 
+        let obj3: any = { a: true }
+        let obj4: any = { a: false }
+        let output2: any = { updates: { a: false } }
+        let comparison2: any = Objects.compare(obj3, obj4);
+
         expect(comparison).toEqual(output);
+        expect(comparison2).toEqual(output2);
 
     });
 

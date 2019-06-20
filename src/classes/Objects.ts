@@ -156,7 +156,7 @@ export class Objects {
                     } else {
 
                         //The property has been removed
-                        changes.deletions = changes.deletions || {};
+                        changes.deletions = "undefined" != typeof changes.deletions ? changes.deletions : {};
                         changes.deletions[key] = true;
 
                     }
@@ -169,7 +169,7 @@ export class Objects {
                     if (!commonKeys.includes(key)) {
 
                         //The property has been added
-                        changes.additions = changes.additions || {};
+                        changes.additions = "undefined" != typeof changes.additions ? changes.additions : {};
                         changes.additions[key] = obj2[key];
 
                     }
@@ -182,20 +182,20 @@ export class Objects {
                     let tempChanges: { updates?: any, deletions?: any, additions?: any } = Objects.compare(obj1[key], obj2[key], cbh + 1);
 
                     //Check if contained properties have been added
-                    if (tempChanges.additions) {
-                        changes.additions = changes.additions || {};
+                    if ("undefined" != typeof tempChanges.additions) {
+                        changes.additions = "undefined" != typeof changes.additions ? changes.additions : {};
                         changes.additions[key] = tempChanges.additions;
                     }
 
                     //Check if contained properties have been deleted
-                    if (tempChanges.deletions) {
-                        changes.deletions = changes.deletions || {};
+                    if ("undefined" != typeof tempChanges.deletions) {
+                        changes.deletions = "undefined" != typeof changes.deletions ? changes.deletions : {};
                         changes.deletions[key] = tempChanges.deletions;
                     }
 
                     //Check if contained properties have been updated
-                    if (tempChanges.updates) {
-                        changes.updates = changes.updates || {};
+                    if ("undefined" != typeof tempChanges.updates) {
+                        changes.updates = "undefined" != typeof changes.updates ? changes.updates : {};
                         changes.updates[key] = tempChanges.updates;
                     }
 
@@ -220,6 +220,7 @@ export class Objects {
                 return { "updates": obj2 };
 
             } else {
+
 
                 //If they are the same return no change
                 if (obj1 == obj2) return {};

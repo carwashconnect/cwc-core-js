@@ -99,30 +99,30 @@ var Objects = (function () {
                         commonKeys.push(key);
                     }
                     else {
-                        changes.deletions = changes.deletions || {};
+                        changes.deletions = "undefined" != typeof changes.deletions ? changes.deletions : {};
                         changes.deletions[key] = true;
                     }
                 }
                 for (var _a = 0, obj2Keys_1 = obj2Keys; _a < obj2Keys_1.length; _a++) {
                     var key = obj2Keys_1[_a];
                     if (!commonKeys.includes(key)) {
-                        changes.additions = changes.additions || {};
+                        changes.additions = "undefined" != typeof changes.additions ? changes.additions : {};
                         changes.additions[key] = obj2[key];
                     }
                 }
                 for (var _b = 0, commonKeys_1 = commonKeys; _b < commonKeys_1.length; _b++) {
                     var key = commonKeys_1[_b];
                     var tempChanges = Objects.compare(obj1[key], obj2[key], cbh + 1);
-                    if (tempChanges.additions) {
-                        changes.additions = changes.additions || {};
+                    if ("undefined" != typeof tempChanges.additions) {
+                        changes.additions = "undefined" != typeof changes.additions ? changes.additions : {};
                         changes.additions[key] = tempChanges.additions;
                     }
-                    if (tempChanges.deletions) {
-                        changes.deletions = changes.deletions || {};
+                    if ("undefined" != typeof tempChanges.deletions) {
+                        changes.deletions = "undefined" != typeof changes.deletions ? changes.deletions : {};
                         changes.deletions[key] = tempChanges.deletions;
                     }
-                    if (tempChanges.updates) {
-                        changes.updates = changes.updates || {};
+                    if ("undefined" != typeof tempChanges.updates) {
+                        changes.updates = "undefined" != typeof changes.updates ? changes.updates : {};
                         changes.updates[key] = tempChanges.updates;
                     }
                 }
