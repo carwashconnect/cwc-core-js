@@ -214,6 +214,15 @@ describe("Objects", function () {
 
     });
 
+    it("compare() should differentiate types", function () {
+        let obj1: any = { a: 50 };
+        let obj2: any = { a: "50" };
+        let output: any = { updates: { a: "50" } }
+        let comparison: any = Objects.compare(obj1, obj2);
+        console.log(comparison)
+        expect(comparison).toEqual(output);
+    });
+
     it("intersect() should check what has changed between objects", function () {
         let obj1: any = { "a": true, "b": true, "c": true, "d": { "a": true, "b": true }, "e": { "a": true } }
         let obj2: any = { "a": true, "b": false, "d": { "a": true, "b": false, "c": true }, "e": true }

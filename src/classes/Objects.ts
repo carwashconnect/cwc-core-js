@@ -221,12 +221,11 @@ export class Objects {
 
             } else {
 
+                //If they are not the same type return the second object
+                if (typeof obj1 != typeof obj2) return { "updates": obj2 };
 
                 //If they are the same return no change
                 if (obj1 == obj2) return {};
-
-                //If they are not the same type return the second object
-                if (typeof obj1 != typeof obj2) return { "updates": obj2 };
 
                 //TODO investigate extra logic here for arrays
                 return { "updates": obj2 }

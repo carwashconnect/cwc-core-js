@@ -137,10 +137,10 @@ var Objects = (function () {
                 return { "updates": obj2 };
             }
             else {
-                if (obj1 == obj2)
-                    return {};
                 if (typeof obj1 != typeof obj2)
                     return { "updates": obj2 };
+                if (obj1 == obj2)
+                    return {};
                 return { "updates": obj2 };
             }
         }
