@@ -33,7 +33,7 @@ var Objects = (function () {
         var currentLevel = obj;
         for (var _a = 0, keys_1 = keys; _a < keys_1.length; _a++) {
             var key = keys_1[_a];
-            if (key in currentLevel) {
+            if ((Objects.isObject(currentLevel) || Array.isArray(currentLevel)) && key in currentLevel) {
                 currentLevel = currentLevel[key];
             }
             else

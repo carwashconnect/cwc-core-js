@@ -33,7 +33,7 @@ export class Objects {
     }
 
     // Evaluates if a property is present deep in an object
-    static deepSearch(obj: any, ...keys: string[]): boolean {
+    static deepSearch(obj: any, ...keys: (string | number)[]): boolean {
 
         // Return if not an object, null, or have exceeded the callback count
         if (!this.isObject(obj) || Array.isArray(obj)) return false;
@@ -44,7 +44,7 @@ export class Objects {
         for (let key of keys) {
 
             //Check if the key is present in the current level
-            if (key in currentLevel) {
+            if ((Objects.isObject(currentLevel) || Array.isArray(currentLevel)) && key in currentLevel) {
 
                 // Copy the new level to the current level
                 currentLevel = currentLevel[key];

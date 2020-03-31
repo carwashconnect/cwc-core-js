@@ -41,7 +41,19 @@ describe("Objects", function () {
         expect(Objects.deepSearch("hello")).toEqual(false);
     });
 
-    it("copy() should return non-objects", function () {
+    it("deepSearch() should evaluate true when going through arrays", function () {
+        let objInput: { [key: string]: any } = { a: [{ b: 0 }, { c: 0 }] };
+        expect(Objects.deepSearch(objInput, "a", "0", "b")).toEqual(true);
+        expect(Objects.deepSearch(objInput, "a", 1, "c")).toEqual(true);
+    });
+
+    it("deepSearch() should evaluate false in niche object cases", function () {
+        expect(Objects.deepSearch(null, "key")).toEqual(false);
+        expect(Objects.deepSearch({ test: null }, "test", "a")).toEqual(false);
+        expect(Objects.deepSearch({ test: "a" }, "test", "a")).toEqual(false);
+    });
+
+    it("copy() should return basic types", function () {
         expect(Objects.copy(null)).toEqual(null);
         expect(Objects.copy(undefined)).toEqual(undefined);
         expect(Objects.copy(false)).toEqual(false);
@@ -219,7 +231,6 @@ describe("Objects", function () {
         let obj2: any = { a: "50" };
         let output: any = { updates: { a: "50" } }
         let comparison: any = Objects.compare(obj1, obj2);
-        console.log(comparison)
         expect(comparison).toEqual(output);
     });
 
