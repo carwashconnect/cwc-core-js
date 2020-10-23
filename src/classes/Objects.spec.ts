@@ -45,6 +45,11 @@ describe("Objects", function () {
         let objInput: { [key: string]: any } = { a: [{ b: 0 }, { c: 0 }] };
         expect(Objects.deepSearch(objInput, "a", "0", "b")).toEqual(true);
         expect(Objects.deepSearch(objInput, "a", 1, "c")).toEqual(true);
+
+        let objInput2: { [key: string]: any }[] = [{ a: [{ b: 0 }, { c: 0 }] }];
+        expect(Objects.deepSearch(objInput2, "0", "a", 1, "c")).toEqual(true);
+        expect(Objects.deepSearch(objInput2, 0, "a", 1, "c")).toEqual(true);
+        expect(Objects.deepSearch(objInput2, 0, "a", 2, "c")).toEqual(false);
     });
 
     it("deepSearch() should evaluate false in niche object cases", function () {

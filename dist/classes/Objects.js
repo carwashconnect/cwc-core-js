@@ -28,7 +28,7 @@ var Objects = (function () {
         for (var _i = 1; _i < arguments.length; _i++) {
             keys[_i - 1] = arguments[_i];
         }
-        if (!this.isObject(obj) || Array.isArray(obj))
+        if (!this.isObject(obj))
             return false;
         var currentLevel = obj;
         for (var _a = 0, keys_1 = keys; _a < keys_1.length; _a++) {

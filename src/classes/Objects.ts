@@ -36,7 +36,7 @@ export class Objects {
     static deepSearch(obj: any, ...keys: (string | number)[]): boolean {
 
         // Return if not an object, null, or have exceeded the callback count
-        if (!this.isObject(obj) || Array.isArray(obj)) return false;
+        if (!this.isObject(obj)) return false;
 
         let currentLevel: any = obj;
 
