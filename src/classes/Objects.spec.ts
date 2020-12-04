@@ -259,6 +259,13 @@ describe("Objects", function () {
         expect(Objects.subtract(obj1, obj2)).toEqual(output);
     });
 
+    it("subtract() should empty out arrays properly", function () {
+        let obj1: any = [undefined, 0, 1, 2, 3, undefined];
+        let obj2: any = { 1: true, 3: true };
+        let output: any = [undefined, 1, 3, undefined]
+        expect(Objects.subtract(obj1, obj2)).toEqual(output);
+    });
+
     it("createPath() should create a path without deleting current contents", function () {
         let obj1: any = { "b": {} }
         let obj2: any = { "a": { "a": 0 }, "b": {} }

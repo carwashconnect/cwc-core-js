@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Objects = void 0;
 var CALLBACK_HELL_LIMIT = 32;
 var Objects = (function () {
     function Objects() {
@@ -195,6 +196,20 @@ var Objects = (function () {
             }
             else {
                 delete obj1Copy[key];
+            }
+        }
+        if (Array.isArray(obj1Copy)) {
+            var deletedKeys = Object.keys(obj2Copy).sort();
+            var offset = 0;
+            for (var _i = 0, deletedKeys_1 = deletedKeys; _i < deletedKeys_1.length; _i++) {
+                var key = deletedKeys_1[_i];
+                if (isNaN(Number(key)))
+                    continue;
+                var index = Number(key) - offset;
+                if (Objects.isObject(obj1Copy[index]) && Objects.isObject(obj2Copy[key]))
+                    continue;
+                obj1Copy.splice(index, 1);
+                offset++;
             }
         }
         return obj1Copy;

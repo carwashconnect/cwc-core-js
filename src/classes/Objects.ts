@@ -333,6 +333,29 @@ export class Objects {
 
         }
 
+        //Handle undefined being left in arrays
+        if (Array.isArray(obj1Copy)) {
+            let deletedKeys = Object.keys(obj2Copy).sort();
+            let offset = 0;
+            for (let key of deletedKeys) {
+
+                //Ensure the key is a number
+                if (isNaN(Number(key))) continue;
+
+                //Handle any previously removed elements
+                let index = Number(key) - offset
+
+                //Skip if the element isn't deleted
+                if (Objects.isObject(obj1Copy[index]) && Objects.isObject(obj2Copy[key])) continue;
+
+                //Remove the element
+                obj1Copy.splice(index, 1);
+
+                //Increase the offset
+                offset++;
+            }
+        }
+
         return obj1Copy
     }
 
