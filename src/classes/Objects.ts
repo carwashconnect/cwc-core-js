@@ -46,6 +46,9 @@ export class Objects {
             //Check if the key is present in the current level
             if ((Objects.isObject(currentLevel) || Array.isArray(currentLevel)) && key in currentLevel) {
 
+                // Undefined does not count as something, come on JavaScript...
+                if("undefined" == typeof currentLevel[key]) return false;
+
                 // Copy the new level to the current level
                 currentLevel = currentLevel[key];
 

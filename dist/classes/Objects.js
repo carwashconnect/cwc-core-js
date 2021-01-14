@@ -35,6 +35,8 @@ var Objects = (function () {
         for (var _a = 0, keys_1 = keys; _a < keys_1.length; _a++) {
             var key = keys_1[_a];
             if ((Objects.isObject(currentLevel) || Array.isArray(currentLevel)) && key in currentLevel) {
+                if ("undefined" == typeof currentLevel[key])
+                    return false;
                 currentLevel = currentLevel[key];
             }
             else

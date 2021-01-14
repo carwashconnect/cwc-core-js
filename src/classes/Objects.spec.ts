@@ -55,6 +55,7 @@ describe("Objects", function () {
     it("deepSearch() should evaluate false in niche object cases", function () {
         expect(Objects.deepSearch(null, "key")).toEqual(false);
         expect(Objects.deepSearch({ test: null }, "test", "a")).toEqual(false);
+        expect(Objects.deepSearch({ test: undefined }, "test")).toEqual(false);
         expect(Objects.deepSearch({ test: "a" }, "test", "a")).toEqual(false);
     });
 
