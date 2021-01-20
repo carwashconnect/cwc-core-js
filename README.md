@@ -240,6 +240,60 @@ Promises.sequence([promise1, promise2, promise3, promise4], true)
     })
 ```
 
+#### loadBalancer( promiseList:LoadBalancerItem<T>[], options?: LoadBalancerOptions ): Promise< LoadBalancerOutputItem<T>[] >
+
+A load balancer used to synchronously execute sets of asynchronous promises. Groups promises into sets and executes each set sequentially; promises within sets are executed asynchonously.
+
+```js
+import { Promises } from '@carwashconnect/cwc-core-js'
+
+let options = {
+    autoBalance: false, // Lets the load balancer evaluate the set size. Overwritten by 'setSize'. (Default: true)
+    offset: 2, // Stacking delay (ms) to wait before executing a promise within a set. (Default: 2)
+    setSize: 2, // The static size of each promise set.
+    shuffle: true, // If the load balancer should shuffle the promises before execution. Does not affect order of output array. (Default: false)
+    timeout: 5000, // Time (ms) the load balancer will attempt to not exceed for all promise executions.
+    verbose: false // If the load balancer should log to the console. (Default: true)
+}
+
+let promises = [
+    {func: (waitTime) => Promises.wait(waitTime).then(() => 2), args:[1000]},
+    {func: (waitTime) => Promises.wait(waitTime).then(() => 4), args:[1000]},
+    {func: () => Promises.wait(1000).then(() => 8)},
+    {func: () => Promises.wait(1000).then(() => 16)},
+]
+Promises.loadBalancer(promises, options)
+    .then((results) => {
+        // ~2 seconds have passed 
+        console.log(results) 
+        // [
+        //     { executionTime:1000, index: 0, result: 2 },
+        //     { executionTime:1002, index: 1, result: 4 },
+        //     { executionTime:1000, index: 2, result: 8 },
+        //     { executionTime:1002, index: 3, result: 16 },
+        // ]
+    });
+    .catch(error => {
+        // We shouldn't hit this
+    })
+```
+
+#### wait( ms:number ): Promise<void>
+
+Waits for the specified time then returns a successful promise.
+
+```js
+import { Promises } from '@carwashconnect/cwc-core-js'
+
+Promises.wait(3000)
+    .then(() => {
+        // 3 seconds have passed
+    });
+    .catch(error => {
+        // We shouldn't hit this
+    })
+```
+
 ### Validator
 
 Used to validate unknown objects.
