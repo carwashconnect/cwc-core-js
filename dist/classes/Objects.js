@@ -179,6 +179,19 @@ var Objects = (function () {
         }
         return intersectedObject;
     };
+    Objects.shuffle = function (arr, createCopy) {
+        if (createCopy === void 0) { createCopy = true; }
+        var tempArr = createCopy ? Objects.copy(arr) : arr;
+        var currentIndex = tempArr.length, temporaryValue, randomIndex;
+        while (0 !== currentIndex) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+            temporaryValue = tempArr[currentIndex];
+            tempArr[currentIndex] = tempArr[randomIndex];
+            tempArr[randomIndex] = temporaryValue;
+        }
+        return tempArr;
+    };
     Objects.subtract = function (obj1, obj2, options) {
         if (options === void 0) { options = { cbh: 0 }; }
         options.cbh = options.cbh || 0;

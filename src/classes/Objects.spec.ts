@@ -251,6 +251,41 @@ describe("Objects", function () {
         expect(Objects.intersect(obj1, obj2, { onlyMatchingFields: false })).toEqual(outputNotMatching);
     });
 
+    it("shuffle() should shuffle arrays", function () {
+        //Very unlikely this will shuffle back to normal
+        const comparisonArr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29];
+        let arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29];
+
+        //Should shuffle copied array
+        let shuffled = Objects.shuffle(arr, true);
+        expect(shuffled).not.toEqual(comparisonArr, "Oops, you may have hit the one occurance where it shuffled back to normal. Try testing again.");
+
+    });
+
+    it("shuffle() should create copys of array if requested", function () {
+        //Very unlikely this will shuffle back to normal
+        const comparisonArr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29];
+        let arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29];
+
+        //Should shuffle copied array
+        let shuffled = Objects.shuffle(arr, true);
+        expect(arr).toEqual(comparisonArr);
+        expect(shuffled).not.toEqual(comparisonArr, "Oops, you may have hit the one occurance where it shuffled back to normal. Try testing again.");
+
+        //Should shuffle original array
+        let shuffled2 = Objects.shuffle(arr, false);
+        expect(arr).not.toEqual(comparisonArr);
+        expect(shuffled2).toEqual(arr, "Oops, you may have hit the one occurance where it shuffled back to normal. Try testing again.");
+    });
+
+    it("shuffle() should return empty arrays", function () {
+        expect(Objects.shuffle([], false)).toEqual([]);
+    });
+
+    it("shuffle() should return single element arrays", function () {
+        expect(Objects.shuffle([1], false)).toEqual([1]);
+    });
+
     it("subtract() should remove what is common between objects", function () {
         let obj1: any = { "a": true, "b": true, "c": true, "d": { "a": true, "b": true, "c": true }, "e": { "a": true }, "f": true }
         let obj2: any = { "a": true, "b": false, "d": { "a": true, "b": false }, "e": true, "f": { "a": true } }

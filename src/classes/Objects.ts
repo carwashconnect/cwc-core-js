@@ -2,7 +2,7 @@ const CALLBACK_HELL_LIMIT: number = 32;
 export class Objects {
 
     //Creates a copy of an object
-    static copy(obj: any, cbh: number = 0): any {
+    static copy<T>(obj: T, cbh: number = 0): T {
 
         // Return if not an object, null, or have exceeded the callback count
         if (!this.isObject(obj) || cbh > CALLBACK_HELL_LIMIT) return obj;
@@ -47,7 +47,7 @@ export class Objects {
             if ((Objects.isObject(currentLevel) || Array.isArray(currentLevel)) && key in currentLevel) {
 
                 // Undefined does not count as something, come on JavaScript...
-                if("undefined" == typeof currentLevel[key]) return false;
+                if ("undefined" == typeof currentLevel[key]) return false;
 
                 // Copy the new level to the current level
                 currentLevel = currentLevel[key];
@@ -293,6 +293,33 @@ export class Objects {
 
         return intersectedObject;
 
+    }
+
+    /**
+     * Shuffles an array (Fisher-Yates (aka Knuth) Shuffle).
+     * See: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+     * @param {any[]} arr The array to be shuffled.
+     * @param {boolean} createCopy If a copy of the array and contents should be created before shuffling. (Default: true)
+     * @returns {any[]} The shuffled array.
+     */
+    static shuffle<T>(arr: T[], createCopy: boolean = true): T[] {
+        let tempArr: any[] = createCopy ? Objects.copy(arr) : arr;
+        let currentIndex = tempArr.length, temporaryValue, randomIndex;
+
+        // While there remain elements to shuffle...
+        while (0 !== currentIndex) {
+
+            // Pick a remaining element...
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+
+            // And swap it with the current element.
+            temporaryValue = tempArr[currentIndex];
+            tempArr[currentIndex] = tempArr[randomIndex];
+            tempArr[randomIndex] = temporaryValue;
+        }
+
+        return tempArr;
     }
 
     // Subtract the fields in the second object from the first object

@@ -87,7 +87,7 @@ let myError:IError = Errors.stamp(iError); // { message: "My error message", cod
 
 Some quality of life functions for handling objects.
 
-#### copy( obj:any ): any
+#### copy( obj:T ): T
 
 Creates a copy of an object to prevent manipulation of the original.
 
@@ -149,6 +149,23 @@ let obj2:any = { "a":["world"], "c":["!"]};
 
 let newObj1:any = Objects.merge(obj1, obj2) // { "a":["world"], "b":", ", "c":["!"] } 
 let newObj2:any = Objects.merge(obj1, obj2, true) // { "a":["hello", "world"], "b":", ", "c":["!"] } 
+```
+
+#### shuffle( arr:T[], createCopy?: boolean ): T[]
+
+Shuffles an array based on Fisher-Yates (aka Knuth) shuffle.
+
+```js
+import { Objects } from '@carwashconnect/cwc-core-js'
+
+let arr: number[] = [0, 1, 2, 3, 4, 5]
+
+let arrCopy:number[] = Objects.shuffle(arr); 
+console.log(arrCopy) // [1, 4, 0, 2, 5, 3]
+console.log(arr) // [0, 1, 2, 3, 4, 5]
+
+Objects.shuffle(arr); 
+console.log(arr) // [3, 0, 4, 1, 5, 2]
 ```
 
 #### trim( obj:any ): any
