@@ -240,7 +240,7 @@ Promises.sequence([promise1, promise2, promise3, promise4], true)
     })
 ```
 
-#### loadBalancer( promiseList:LoadBalancerItem<T>[], options?: LoadBalancerOptions ): Promise< LoadBalancerOutputItem<T>[] >
+#### loadBalancer( promiseList:LoadBalancerItem<T>[], options?: LoadBalancerOptions ): Promise<LoadBalancerOutputItem<T>[]>
 
 A load balancer used to synchronously execute sets of asynchronous promises. Groups promises into sets and executes each set sequentially; promises within sets are executed asynchonously.
 
