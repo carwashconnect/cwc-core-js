@@ -13,7 +13,19 @@ npm i @carwashconnect/cwc-core-js
 
 Reduces the work to convert between date formats.
 
-#### toISO( timeStamp:number ): string
+#### toCountdown( time: Date | number | string ): string
+
+Converts a number (ms) or date into a countdown format. ("#d #h #m #s")
+
+```js
+import { Dates } from '@carwashconnect/cwc-core-js'
+
+let countDown1:string = Dates.toCountdown(750) // "1s"
+let countDown2:string = Dates.toCountdown(3600000) // "1h 0m 0s"
+let countDown3:string = Dates.toCountdown(90061000) // "1d 1h 1m 1s"
+```
+
+#### toISO( date: Date | number | string ): string
 
 Converts a timestamp into an ISO date string.
 
@@ -24,7 +36,7 @@ let timeStamp:number = 1534264485715;
 let isoDate:string = Dates.toISO(timeStamp) // "2018-08-14T16:34:45.715Z"
 ```
 
-#### toTimeStamp( isoDate:string ): number
+#### toTimeStamp( date: Date | number | string ): number
 
 Converts an ISO date string into timeStamp.
 
