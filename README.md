@@ -184,7 +184,7 @@ obj = Objects.trim(obj) // { "a":["world"] }
 
 Some quality of life functions for handling promises.
 
-#### all( promises:Promise<any>[] ): Promise<any[]>
+#### all( promises:Promise&#60;any&#62;[] ): Promise&#60;any[]&#62;
 
 Executes all promises in an array at the same time and does not stop due to errors.
 
@@ -207,7 +207,7 @@ Promises.all([promise1, promise2, promise3, promise4])
     })
 ```
 
-#### sequence( promises:Promise<any>[], ignoreErrors?:boolean ): Promise<any[]>
+#### sequence( promises:Promise&#60;any&#62;[], ignoreErrors?:boolean ): Promise&#60;any[]&#62;
 
 Executes all promises in an array in order.
 
@@ -240,7 +240,7 @@ Promises.sequence([promise1, promise2, promise3, promise4], true)
     })
 ```
 
-#### loadBalancer( promiseList:LoadBalancerItem<T>[], options?: LoadBalancerOptions ): Promise<LoadBalancerOutputItem<T>[]>
+#### loadBalancer( promiseList:LoadBalancerItem&#60;T&#62;[], options?: LoadBalancerOptions ): Promise&#60;LoadBalancerOutputItem&#60;T&#62;[]&#62;
 
 A load balancer used to synchronously execute sets of asynchronous promises. Groups promises into sets and executes each set sequentially; promises within sets are executed asynchonously.
 
@@ -278,7 +278,7 @@ Promises.loadBalancer(promises, options)
     })
 ```
 
-#### wait( ms:number ): Promise<void>
+#### wait( ms:number ): Promise&#60;void&#62;
 
 Waits for the specified time then returns a successful promise.
 
@@ -320,7 +320,7 @@ let limit:ValidationLimits = {
 }
 ```
 
-#### validate( obj:any, structure:ValidationLimits | ValidationStructure | ValidationStructure[] ): Promise<any>
+#### validate( obj:any, structure:ValidationLimits | ValidationStructure | ValidationStructure[] ): Promise&#60;any&#62;
 
 Validates an object with an unknown structure. If expected properties match returns and object without unexpected properties. Will go as deep as the structure defines.
 
