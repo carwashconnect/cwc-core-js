@@ -21,7 +21,7 @@
   "homepage": "https://github.com/carwashconnect/cwc-core-js#readme",
   "devDependencies": {
     "@types/jasmine": "^2.8.17",
-    "jasmine": "^3.6.3",
+    "jasmine": "^3.6.4",
     "jasmine-core": "^3.6.0",
     "jasmine-ts": "^0.2.1",
     "typescript": "^3.9.7"

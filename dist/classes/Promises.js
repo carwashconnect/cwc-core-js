@@ -104,7 +104,8 @@ var Promises = (function () {
                         promiseListCopy = Objects_1.Objects.copy(promiseList);
                         if (options.shuffle) {
                             for (i in promiseListCopy) {
-                                promiseListCopy[i].index = i;
+                                if ("undefined" == typeof promiseListCopy[i].index)
+                                    promiseListCopy[i].index = Number(i);
                             }
                             Objects_1.Objects.shuffle(promiseListCopy, false);
                         }
@@ -262,7 +263,7 @@ var Promises = (function () {
                     case 4:
                         if (options.shuffle) {
                             promiseResponses.sort(function (a, b) {
-                                if (!a.index || !b.index)
+                                if ("undefined" == typeof a.index || "undefined" == typeof b.index)
                                     return 0;
                                 if (a.index > b.index)
                                     return 1;

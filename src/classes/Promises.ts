@@ -69,7 +69,8 @@ export class Promises {
 
             //Index the entries so the response can be reordered
             for (let i in promiseListCopy) {
-                promiseListCopy[i].index = i;
+                if ("undefined" == typeof promiseListCopy[i].index)
+                    promiseListCopy[i].index = Number(i);
             }
 
             //Shuffle the original
@@ -245,7 +246,7 @@ export class Promises {
 
             //Resort the output array to match input array
             promiseResponses.sort((a, b) => {
-                if (!a.index || !b.index) return 0
+                if ("undefined" == typeof a.index || "undefined" == typeof b.index) return 0
                 if (a.index > b.index) return 1;
                 if (a.index < b.index) return -1;
                 return 0;
