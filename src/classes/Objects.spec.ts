@@ -9,6 +9,13 @@ describe("Objects", function () {
         expect(Objects.trim([objInput])).toEqual([objOutput]);
     });
 
+    it("trim() should remove undefined values from an object", function () {
+        let objInput: { [key: string]: any } = { "a": 0, "b": undefined, "c": { "d": "world", "e": undefined } };
+        let objOutput: { [key: string]: any } = { "a": 0, "c": { "d": "world" } }
+        expect(Objects.trim(objInput)).toEqual(objOutput);
+        expect(Objects.trim([objInput])).toEqual([objOutput]);
+    });
+    
     it("trim() should return non-objects", function () {
         expect(Objects.trim(null)).toEqual(null);
         expect(Objects.trim(undefined)).toEqual(undefined);

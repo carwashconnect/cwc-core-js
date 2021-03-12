@@ -73,14 +73,14 @@ var Objects = (function () {
         if (Array.isArray(obj)) {
             returnObj = [];
             for (var i in obj) {
-                if ("" !== obj[i])
+                if ("" !== obj[i] && "undefined" !== typeof obj[i])
                     returnObj.push(Objects.trim(obj[i], cbh + 1));
             }
         }
         else {
             returnObj = {};
             for (var i in obj) {
-                if ("" !== obj[i])
+                if ("" !== obj[i] && "undefined" !== typeof obj[i])
                     returnObj[i] = Objects.trim(obj[i], cbh + 1);
             }
         }

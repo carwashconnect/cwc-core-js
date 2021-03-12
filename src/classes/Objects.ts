@@ -117,7 +117,7 @@ export class Objects {
             // Prepare an array to return
             returnObj = [];
             for (let i in obj) {
-                if ("" !== obj[i]) returnObj.push(Objects.trim(obj[i], cbh + 1));
+                if ("" !== obj[i] && "undefined" !== typeof obj[i]) returnObj.push(Objects.trim(obj[i], cbh + 1));
             }
 
         } else {
@@ -125,7 +125,7 @@ export class Objects {
             // Prepare an object to return
             returnObj = {};
             for (let i in obj) {
-                if ("" !== obj[i]) returnObj[i] = Objects.trim(obj[i], cbh + 1);
+                if ("" !== obj[i] && "undefined" !== typeof obj[i]) returnObj[i] = Objects.trim(obj[i], cbh + 1);
             }
 
         }
