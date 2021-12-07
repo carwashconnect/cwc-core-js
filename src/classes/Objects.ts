@@ -65,14 +65,14 @@ export class Objects {
     }
 
     // Merges two objects together
-    static merge(obj1: any, obj2: any, combineArrays: boolean = false, cbh: number = 0): any {
+    static merge<T, K>(obj1: T, obj2: K, combineArrays: boolean = false, cbh: number = 0): T & K {
 
         //Create a copy of both object if we're at the top level
-        let obj1Copy: any = cbh > 0 ? obj1 : this.copy(obj1);
-        let obj2Copy: any = cbh > 0 ? obj2 : this.copy(obj2);
+        let obj1Copy: T & K = <T & K><unknown>(cbh > 0 ? obj1 : this.copy(obj1));
+        let obj2Copy: K = cbh > 0 ? obj2 : this.copy(obj2);
 
         // If the objects cannot be merged return the second
-        if (!this.isObject(obj1Copy) || !this.isObject(obj2Copy) || cbh > CALLBACK_HELL_LIMIT) return obj2Copy;
+        if (!this.isObject(obj1Copy) || !this.isObject(obj2Copy) || cbh > CALLBACK_HELL_LIMIT) return <T & K><unknown>obj2Copy;
 
         // Check if the second object is an array
         if (Array.isArray(obj2Copy)) {
@@ -81,12 +81,12 @@ export class Objects {
             if (combineArrays && Array.isArray(obj1Copy)) {
 
                 //Return the combined arrays
-                return obj1Copy.concat(obj2Copy);
+                return <T & K><unknown>obj1Copy.concat(obj2Copy);
 
             }
 
             //Return the second object
-            return obj2Copy;
+            return <T & K><unknown>obj2Copy;
 
         }
 
@@ -99,12 +99,12 @@ export class Objects {
         }
 
         //Return the first object with the second merged in
-        return obj1Copy;
+        return <T & K><unknown>obj1Copy;
 
     }
 
     // Removes empty string from an object
-    static trim(obj: any, cbh: number = 0): any {
+    static trim<T>(obj: T, cbh: number = 0): Partial<T> {
 
         // Return if not an object, null, or have exceeded the callback count
         if (!this.isObject(obj) || cbh > CALLBACK_HELL_LIMIT) return obj;
@@ -125,7 +125,7 @@ export class Objects {
             // Prepare an object to return
             returnObj = {};
             for (let i in obj) {
-                if ("" !== obj[i] && "undefined" !== typeof obj[i]) returnObj[i] = Objects.trim(obj[i], cbh + 1);
+                if ("" !== <unknown>obj[i] && "undefined" !== typeof obj[i]) returnObj[i] = Objects.trim(obj[i], cbh + 1);
             }
 
         }
@@ -134,7 +134,7 @@ export class Objects {
     }
 
     // Returns the differences between the two objects
-    static compare(obj1: any, obj2: any, cbh: number = 0): { updates?: any, deletions?: any, additions?: any } {
+    static compare<T extends Record<any, any>, K extends Record<any, any>>(obj1: T, obj2: K, cbh: number = 0): { updates?: Record<keyof Partial<T & K>, any>, deletions?: Record<keyof Partial<T & K>, any>, additions?: Record<keyof Partial<T & K>, any> } {
 
         //Check if we've exceeded the call back limit
         if (cbh > CALLBACK_HELL_LIMIT) return {};

@@ -50,7 +50,7 @@ var Objects = (function () {
     Objects.merge = function (obj1, obj2, combineArrays, cbh) {
         if (combineArrays === void 0) { combineArrays = false; }
         if (cbh === void 0) { cbh = 0; }
-        var obj1Copy = cbh > 0 ? obj1 : this.copy(obj1);
+        var obj1Copy = (cbh > 0 ? obj1 : this.copy(obj1));
         var obj2Copy = cbh > 0 ? obj2 : this.copy(obj2);
         if (!this.isObject(obj1Copy) || !this.isObject(obj2Copy) || cbh > CALLBACK_HELL_LIMIT)
             return obj2Copy;
