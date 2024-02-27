@@ -14,9 +14,7 @@ export declare class Objects {
     static subtract(obj1: any, obj2: any, options?: ISubtractOptions): IGenericObject;
     static createPath(obj: IGenericObject, ...keys: string[]): IGenericObject;
 }
-export interface IGenericObject {
-    [key: string]: any;
-}
+export type IGenericObject = Record<any, any>;
 export interface IGeneralObjectOptions {
     cbh?: number;
 }

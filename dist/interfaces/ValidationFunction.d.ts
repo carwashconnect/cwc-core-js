@@ -1,1 +1,1 @@
-export declare type ValidationFunction = (input: any, comparison?: any) => boolean;
+export type ValidationFunction = (input: any, comparison?: any) => boolean;

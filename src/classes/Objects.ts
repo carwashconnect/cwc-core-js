@@ -228,7 +228,7 @@ export class Objects {
                 if (typeof obj1 != typeof obj2) return { "updates": obj2 };
 
                 //If they are the same return no change
-                if (obj1 == obj2) return {};
+                if (<unknown>obj1 === <unknown>obj2) return {};
 
                 //TODO investigate extra logic here for arrays
                 return { "updates": obj2 }
@@ -416,9 +416,7 @@ export class Objects {
 
 }
 
-export interface IGenericObject {
-    [key: string]: any
-}
+export type IGenericObject = Record<any, any>;
 
 export interface IGeneralObjectOptions {
     cbh?: number;

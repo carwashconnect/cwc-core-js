@@ -1,3 +1,4 @@
+import "jasmine";
 import { Validator } from "./Validator";
 import { ValidationLimits } from "../interfaces/ValidationLimits"
 import { ValidationStructure } from "../interfaces/ValidationStructure"
@@ -195,7 +196,7 @@ describe("Validator", function () {
 
 
     //Limits
-    it("validate() should validate simple limits", function (done) {
+    it("validate() should validate simple limits", async () => {
 
         let limit: ValidationStructure = {
             validationType: ["number"],
@@ -204,56 +205,28 @@ describe("Validator", function () {
         }
 
 
-        validator.validate(16, limit)
-            .then((newObj: any) => {
-                expect(true).toEqual(false);
-                done()
-            })
-            .catch(error => {
-                expect(true).toEqual(true);
-                done()
-            })
+        let isError1 = false;
+        const output1 = await validator.validate(16, limit).catch(() => { isError1 = true })
+        expect(isError1).toBeTrue();
 
-        validator.validate(17, limit)
-            .then((newObj: any) => {
-                expect(newObj).toEqual(17);
-                done()
-            })
-            .catch(error => {
-                console.log(error);
-                expect(true).toEqual(false);
-                done()
-            })
+        let isError2 = false;
+        const output2 = await validator.validate(17, limit).catch(() => { isError2 = true })
+        expect(output2).toEqual(17);
+        expect(isError2).toBeFalse();
 
-        validator.validate(18, limit)
-            .then((newObj: any) => {
-                expect(newObj).toEqual(18);
-                done()
-            })
-            .catch(error => {
-                expect(true).toEqual(false);
-                done()
-            })
+        let isError3 = false;
+        const output3 = await validator.validate(18, limit).catch(() => { isError3 = true })
+        expect(output3).toEqual(18);
+        expect(isError3).toBeFalse();
 
-        validator.validate(19, limit)
-            .then((newObj: any) => {
-                expect(newObj).toEqual(19);
-                done()
-            })
-            .catch(error => {
-                expect(true).toEqual(false);
-                done()
-            })
+        let isError4 = false;
+        const output4 = await validator.validate(19, limit).catch(() => { isError4 = true })
+        expect(output4).toEqual(19);
+        expect(isError4).toBeFalse();
 
-        validator.validate(20, limit)
-            .then((newObj: any) => {
-                expect(true).toEqual(false);
-                done()
-            })
-            .catch(error => {
-                expect(true).toEqual(true);
-                done()
-            })
+        let isError5 = false;
+        const output5 = await validator.validate(20, limit).catch(() => { isError5 = true })
+        expect(isError5).toBeTrue();
 
     });
 

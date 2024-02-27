@@ -1,3 +1,4 @@
+import "jasmine";
 import { Errors } from "./Errors";
 import { IError } from "../interfaces/IError"
 describe("Errors", function () {

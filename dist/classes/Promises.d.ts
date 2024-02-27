@@ -9,7 +9,7 @@ export interface LoadBalancerItem<Output = any, Input = any> {
     args?: Input[];
     index?: number | string;
 }
-export declare type LoadBalancerOutputItem<Output> = LoadBalancerOutputSuccessItem<Output> | LoadBalancerOutputFailureItem<Output>;
+export type LoadBalancerOutputItem<Output> = LoadBalancerOutputSuccessItem<Output> | LoadBalancerOutputFailureItem<Output>;
 export interface LoadBalancerOutputSuccessItem<Output> extends LoadBalancerOutputGeneralItem<Output> {
     result: Output;
     error?: undefined;

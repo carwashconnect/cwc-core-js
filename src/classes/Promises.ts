@@ -24,7 +24,7 @@ export class Promises {
             let i: number = 0;
             let promiseResults: any[] = [];
             let executePromise: () => void = () => {
-                if (promises[i]) {
+                if (promises[i] instanceof Promise) {
                     promises[i].then((data: any) => {
                         promiseResults.push(data)
                         i++;

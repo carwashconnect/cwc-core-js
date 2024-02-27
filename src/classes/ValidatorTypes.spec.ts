@@ -1,3 +1,4 @@
+import "jasmine";
 import { isArray, isBoolean, isEmail, isJWTToken, isNull, isNumber, isPhoneNumber, isObject, isUndefined, isISODate, isString } from "./ValidatorTypes";
 
 describe("Validator types", function () {

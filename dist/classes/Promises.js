@@ -14,7 +14,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -57,7 +57,7 @@ var Promises = (function () {
             var i = 0;
             var promiseResults = [];
             var executePromise = function () {
-                if (promises[i]) {
+                if (promises[i] instanceof Promise) {
                     promises[i].then(function (data) {
                         promiseResults.push(data);
                         i++;
@@ -82,10 +82,10 @@ var Promises = (function () {
     Promises.loadBalancer = function (promiseList, options) {
         if (options === void 0) { options = {}; }
         return __awaiter(this, void 0, void 0, function () {
-            var promiseListCopy, i, promiseResponses, promiseSets, setSize, maxSetTimes, sum, totalExecutionTime, averageExecutionTime, isTimedOut, _loop_1, _a, _b, _i, i;
+            var promiseListCopy, i, promiseResponses, promiseSets, setSize, maxSetTimes, sum, totalExecutionTime, averageExecutionTime, isTimedOut, _loop_1, _a, _b, _c, _i, i;
             var _this = this;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
+            return __generator(this, function (_d) {
+                switch (_d.label) {
                     case 0:
                         if ("undefined" == typeof options.autoBalance)
                             options.autoBalance = true;
@@ -133,16 +133,16 @@ var Promises = (function () {
                             }
                         }
                         if (options.verbose)
-                            console.log("Starting load balancing - set size: " + setSize + ", iterations: " + promiseSets.length + ("undefined" != typeof options.timeout ? ", timeout: " + Dates_1.Dates.toCountdown(options.timeout) : ""));
+                            console.log("Starting load balancing - set size: ".concat(setSize, ", iterations: ").concat(promiseSets.length).concat("undefined" != typeof options.timeout ? ", timeout: ".concat(Dates_1.Dates.toCountdown(options.timeout)) : ""));
                         maxSetTimes = [];
                         sum = function (accumulator, currentValue) { return accumulator + currentValue; };
                         totalExecutionTime = 0;
                         averageExecutionTime = 0;
                         isTimedOut = false;
                         _loop_1 = function (i) {
-                            var iIndex, set, setPromises, _loop_2, j, setResponses, maxSetTime, _i, setResponses_1, response, remainingSets, expectedDuration, e_1;
-                            return __generator(this, function (_a) {
-                                switch (_a.label) {
+                            var iIndex, set, setPromises, _loop_2, j, setResponses, maxSetTime, _e, setResponses_1, response, remainingSets, expectedDuration, e_1;
+                            return __generator(this, function (_f) {
+                                switch (_f.label) {
                                     case 0:
                                         iIndex = Number(i) || 0;
                                         set = promiseSets[i];
@@ -205,17 +205,17 @@ var Promises = (function () {
                                         for (j in set) {
                                             _loop_2(j);
                                         }
-                                        _a.label = 1;
+                                        _f.label = 1;
                                     case 1:
-                                        _a.trys.push([1, 3, , 4]);
+                                        _f.trys.push([1, 3, , 4]);
                                         return [4, Promise.all(setPromises)];
                                     case 2:
-                                        setResponses = _a.sent();
+                                        setResponses = _f.sent();
                                         promiseResponses.push.apply(promiseResponses, setResponses);
                                         maxSetTime = 0;
                                         if (!isTimedOut) {
-                                            for (_i = 0, setResponses_1 = setResponses; _i < setResponses_1.length; _i++) {
-                                                response = setResponses_1[_i];
+                                            for (_e = 0, setResponses_1 = setResponses; _e < setResponses_1.length; _e++) {
+                                                response = setResponses_1[_e];
                                                 maxSetTime = Math.max(maxSetTime, response.executionTime);
                                             }
                                             maxSetTimes.push(maxSetTime);
@@ -227,36 +227,39 @@ var Promises = (function () {
                                             expectedDuration = averageExecutionTime * remainingSets;
                                             if (!isTimedOut) {
                                                 if (remainingSets) {
-                                                    console.log("Set " + (iIndex + 1) + " (" + set.length + " item" + (1 < set.length ? "s" : "") + ") completed in " + Dates_1.Dates.toCountdown(maxSetTime) + ". Estimated completion time for remaining " + remainingSets + " set" + (1 < remainingSets ? "s" : "") + ": " + Dates_1.Dates.toCountdown(expectedDuration) + ".");
+                                                    console.log("Set ".concat(iIndex + 1, " (").concat(set.length, " item").concat(1 < set.length ? "s" : "", ") completed in ").concat(Dates_1.Dates.toCountdown(maxSetTime), ". Estimated completion time for remaining ").concat(remainingSets, " set").concat(1 < remainingSets ? "s" : "", ": ").concat(Dates_1.Dates.toCountdown(expectedDuration), "."));
                                                 }
                                                 else {
-                                                    console.log("Set " + (iIndex + 1) + " (" + set.length + " item" + (1 < set.length ? "s" : "") + ") completed in " + Dates_1.Dates.toCountdown(maxSetTime) + ".");
+                                                    console.log("Set ".concat(iIndex + 1, " (").concat(set.length, " item").concat(1 < set.length ? "s" : "", ") completed in ").concat(Dates_1.Dates.toCountdown(maxSetTime), "."));
                                                 }
                                             }
                                             else {
-                                                console.log("Set " + (iIndex + 1) + " (" + set.length + " item" + (1 < set.length ? "s" : "") + ") timed out.");
+                                                console.log("Set ".concat(iIndex + 1, " (").concat(set.length, " item").concat(1 < set.length ? "s" : "", ") timed out."));
                                             }
                                         }
                                         return [3, 4];
                                     case 3:
-                                        e_1 = _a.sent();
+                                        e_1 = _f.sent();
                                         throw e_1;
                                     case 4: return [2];
                                 }
                             });
                         };
-                        _a = [];
-                        for (_b in promiseSets)
-                            _a.push(_b);
+                        _a = promiseSets;
+                        _b = [];
+                        for (_c in _a)
+                            _b.push(_c);
                         _i = 0;
-                        _c.label = 1;
+                        _d.label = 1;
                     case 1:
-                        if (!(_i < _a.length)) return [3, 4];
-                        i = _a[_i];
+                        if (!(_i < _b.length)) return [3, 4];
+                        _c = _b[_i];
+                        if (!(_c in _a)) return [3, 3];
+                        i = _c;
                         return [5, _loop_1(i)];
                     case 2:
-                        _c.sent();
-                        _c.label = 3;
+                        _d.sent();
+                        _d.label = 3;
                     case 3:
                         _i++;
                         return [3, 1];

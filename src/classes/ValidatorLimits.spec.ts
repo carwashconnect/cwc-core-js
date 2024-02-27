@@ -1,3 +1,4 @@
+import "jasmine";
 import { limitMax as max, limitMin as min, limitMaxLength as maxLength, limitMinLength as minLength } from "./ValidatorLimits"
 
 describe("Validator limits", function () {

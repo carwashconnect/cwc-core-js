@@ -13,7 +13,7 @@ var Dates = (function () {
         var minutes = Math.floor(time / 60000);
         time = time - minutes * 60000;
         var seconds = minutes || hours || days ? Math.floor(time / 1000) : Math.round(time / 1000);
-        return "" + (days ? days + "d " : "") + (hours || days ? hours + "h " : "") + (minutes || hours || days ? minutes + "m " : "") + seconds + "s";
+        return "".concat(days ? "".concat(days, "d ") : "").concat(hours || days ? "".concat(hours, "h ") : "").concat(minutes || hours || days ? "".concat(minutes, "m ") : "").concat(seconds, "s");
     };
     Dates.toISO = function (timeStamp) {
         return (new Date(timeStamp)).toISOString();
